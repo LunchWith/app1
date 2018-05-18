@@ -65,7 +65,7 @@ class App extends React.Component {
                                 <span className="icon-bar" />
                             </button>
                             <a className="navbar-brand" onClick={this.goToIndex}>
-                                Django React Redux Demo
+                                LunchWit
                             </a>
                         </div>
                         <div className="collapse navbar-collapse" id="top-navbar">

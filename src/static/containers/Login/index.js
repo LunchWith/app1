@@ -28,12 +28,12 @@ const LoginFormOptions = {
 class LoginView extends React.Component {
     static propTypes = {
         dispatch: PropTypes.func.isRequired,
-        isAuthenticated: PropTypes.bool.isRequired,
-        isAuthenticating: PropTypes.bool.isRequired,
-        statusText: PropTypes.string,
         actions: PropTypes.shape({
             authLoginUser: PropTypes.func.isRequired
         }).isRequired,
+        isAuthenticated: PropTypes.bool.isRequired,
+        isAuthenticating: PropTypes.bool.isRequired,
+        statusText: PropTypes.string,
         location: PropTypes.shape({
             search: PropTypes.string.isRequired
         })

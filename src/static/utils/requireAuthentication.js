@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import PropTypes from 'prop-types';
 
+
 export default function requireAuthentication(Component) {
     class AuthenticatedComponent extends React.Component {
         static propTypes = {

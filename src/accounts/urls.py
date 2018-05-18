@@ -3,6 +3,8 @@ from django.utils.translation import ugettext_lazy as _
 
 import accounts.views
 
+
+app_name = 'accounts'
 urlpatterns = [
     url(_(r'^register/$'),
         accounts.views.UserRegisterView.as_view(),
@@ -16,5 +18,4 @@ urlpatterns = [
     url(_(r'^status/email/$'),
         accounts.views.UserEmailConfirmationStatusView.as_view(),
         name='status'),
-
 ]

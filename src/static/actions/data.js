@@ -1,6 +1,5 @@
 import fetch from 'isomorphic-fetch';
 import { push } from 'react-router-redux';
-
 import { SERVER_URL } from '../utils/config';
 import { checkHttpStatus, parseJSON } from '../utils';
 import { DATA_FETCH_PROTECTED_DATA_REQUEST, DATA_RECEIVE_PROTECTED_DATA } from '../constants';

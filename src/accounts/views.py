@@ -31,6 +31,7 @@ class UserLoginView(GenericAPIView):
     def post(self, request):
         """User login with username and password."""
         token = AuthToken.objects.create(request.user)
+
         return Response({
             'user': self.get_serializer(request.user).data,
             'token': token
