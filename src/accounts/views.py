@@ -32,6 +32,12 @@ class UserLoginView(GenericAPIView):
         """User login with username and password."""
         token = AuthToken.objects.create(request.user)
 
+        print('--------------------------------')
+        print(self.get_serializer(request.user).data)
+        print('--------------------------------')
+        print(token)
+        print('--------------------------------')
+
         return Response({
             'user': self.get_serializer(request.user).data,
             'token': token

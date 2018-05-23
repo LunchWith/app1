@@ -2,7 +2,8 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Write from '../Card/write';
+import CardWrite from '../Card/write';
+import CardList from '../Card/list';
 
 import './style.scss';
 
@@ -27,7 +28,8 @@ class HomeView extends React.Component {
     render() {
         return (
             <div className="container">
-                {this.props.isAuthenticated ? <Write /> : null}
+                {this.props.isAuthenticated ? <CardWrite /> : null}
+                <CardList />
             </div>
         );
     }

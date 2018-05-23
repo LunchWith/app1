@@ -76,6 +76,9 @@ AUTH_USER_MODEL = 'accounts.User'
 
 ACCOUNT_ACTIVATION_DAYS = 7  # days
 
+MEDIA_URL = '/imageStorage/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'imageStorage')
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 STATICFILES_DIRS = (

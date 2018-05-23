@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "autoprefixer": "7.1.2",
+    "axios": "^0.18.0",
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",
     "babel-plugin-react-display-name": "2.0.0",
@@ -64,6 +65,7 @@
     "react-router": "4.2.0",
     "react-router-dom": "4.2.2",
     "react-router-redux": "5.0.0-alpha.6",
+    "react-youtube": "^7.6.0",
     "redux": "3.7.2",
     "redux-thunk": "2.2.0",
     "resolve-url-loader": "2.1.0",

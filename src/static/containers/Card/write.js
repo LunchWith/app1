@@ -20,7 +20,7 @@ class CardWrite extends React.Component {
             contents: '',
             videoid: '',
             imageFile: null,
-            imageFileName: 'image',
+            imageName: 'image',
         };
     }
 
@@ -39,7 +39,7 @@ class CardWrite extends React.Component {
     handleChangeImage = (e) => {
         this.setState({
             imageFile: e.target.files[0],
-            imageFileName: e.target.files[0].name
+            imageName: e.target.files[0].name
         });
     }
 
@@ -57,6 +57,7 @@ class CardWrite extends React.Component {
                 contents: '',
                 videoid: '',
                 imageFile: null,
+                imageName: 'image',
             });
         });
     }
@@ -93,14 +94,13 @@ class CardWrite extends React.Component {
                             <div className="col-xs-5">
                                 <div className="input-group">
                                     <div className="input-group-addon">
-                                        <span className="glyphicon glyphicon-picture"
-                                            onMouseOver={this.handleMouseOverImage}
-                                            onClick={this.handleClickImage}
-                                        />
+                                        <a onClick={this.handleClickImage}>
+                                            <i className="glyphicon glyphicon-picture" />
+                                        </a>
                                     </div>
                                     <input className="form-control input-md"
                                         type="text"
-                                        placeholder={this.state.imageFileName}
+                                        placeholder={this.state.imageName}
                                         disabled
                                     />
                                     <div className="hide">
@@ -126,13 +126,6 @@ class CardWrite extends React.Component {
 }
 
 
-const mapStateToProps = (state) => {
-    return {
-
-    };
-};
-
-
 const mapDispatchToProps = (dispatch) => {
     return {
         dispatch,
@@ -141,5 +134,5 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(CardWrite);
+export default connect(null, mapDispatchToProps)(CardWrite);
 export { CardWrite as CardWriteNotConnected };
