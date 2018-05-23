@@ -29,7 +29,7 @@ class Video extends React.Component {
         );
 
         return (
-            <div className="slef-card-body">
+            <div className="self-card-body">
                 {this.props.videoid !== '' ? video : ''}
             </div>
         );

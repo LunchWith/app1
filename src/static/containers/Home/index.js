@@ -2,8 +2,8 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import CardWrite from '../Card/write';
-import CardList from '../Card/list';
+import CardWriteView from '../CardWrite/index';
+import CardListView from '../CardList/index';
 
 import './style.scss';
 
@@ -12,13 +12,6 @@ class HomeView extends React.Component {
     static propTypes = {
         isAuthenticated: PropTypes.bool.isRequired,
         dispatch: PropTypes.func.isRequired,
-        // statusText: PropTypes.string,
-        // userName: PropTypes.string,
-    };
-
-    static defaultProps = {
-        // statusText: '',
-        // userName: ''
     };
 
     goToProtected = () => {
@@ -28,8 +21,8 @@ class HomeView extends React.Component {
     render() {
         return (
             <div className="container">
-                {this.props.isAuthenticated ? <CardWrite /> : null}
-                <CardList />
+                {this.props.isAuthenticated ? <CardWriteView /> : null}
+                <CardListView />
             </div>
         );
     }

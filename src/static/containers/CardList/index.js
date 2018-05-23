@@ -7,7 +7,7 @@ import * as actionCreators from '../../actions/card';
 import Card from '../../components/card';
 
 
-class CardList extends React.Component {
+class CardListView extends React.Component {
     static propTypes = {
         dataSet: PropTypes.arrayOf(
             PropTypes.shape({
@@ -61,5 +61,5 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CardList);
-export { CardList as CardListNoConnected };
+export default connect(mapStateToProps, mapDispatchToProps)(CardListView);
+export { CardListView as CardListViewNoConnected };

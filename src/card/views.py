@@ -58,6 +58,6 @@ class CardListView(GenericAPIView):
             dataSet[i]['username'] \
                 = username['first_name'] \
                 + username['last_name']
-            datdaSet[i]['imagePath'] = imagePath
+            dataSet[i]['imagePath'] = imagePath
 
         return JsonResponse({'dataSet': list(dataSet)}, status=201)

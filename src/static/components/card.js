@@ -26,7 +26,7 @@ class Card extends React.Component {
                         <TimeAgo date={data.create_at} />
                     </small> */}
                     <div className="modal-body">
-                        <div className="slef-card-body">
+                        <div className="self-card-body">
                             <Image imagePath={this.props.card.imagePath} />
                             <Video videoid={this.props.card.videoid} />
                         </div>

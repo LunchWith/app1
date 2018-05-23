@@ -6,22 +6,11 @@ import PropTypes from 'prop-types';
 import * as actionCreators from '../../actions/card';
 
 
-class CardWrite extends React.Component {
+class CardWriteView extends React.Component {
     static propTypes = {
         actions: PropTypes.shape({
             cardPost: PropTypes.func.isRequired
         }).isRequired,
-    };
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            contents: '',
-            videoid: '',
-            imageFile: null,
-            imageName: 'image',
-        };
     }
 
     handleChange = (e) => {
@@ -52,14 +41,7 @@ class CardWrite extends React.Component {
         const videoid = this.state.videoid;
         const imageFile = this.state.imageFile;
 
-        this.props.actions.cardPost(contents, videoid, imageFile).then(() => {
-            this.setState({
-                contents: '',
-                videoid: '',
-                imageFile: null,
-                imageName: 'image',
-            });
-        });
+        this.props.actions.cardPost(contents, videoid, imageFile);
     }
 
     render() {
@@ -134,5 +116,5 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-export default connect(null, mapDispatchToProps)(CardWrite);
-export { CardWrite as CardWriteNotConnected };
+export default connect(null, mapDispatchToProps)(CardWriteView);
+export { CardWriteView as CardWriteViewNotConnected };
