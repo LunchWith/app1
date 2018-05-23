@@ -1,23 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { SERVER_URL } from '../utils/config';
 
 
 class Image extends React.Component {
     static propTypes = {
-        imageRoot: PropTypes.string.isRequired,
         imagePath: PropTypes.string.isRequired,
     }
-    
+
     render() {
+        const imageRoot = `${SERVER_URL}/imageStorage/`;
+        const imageSrc = imageRoot + this.props.imagePath;
         const showImage = (
-            <img src={this.state.imageRoot + this.state.imagePath} />
+            <img className="self-card-body img-rounded img-responsive" src={imageSrc} alt="" />
         );
 
         return (
-            <div>
+            <div className="self-card-body">
                 {this.props.imagePath !== undefined ? showImage : ''}
             </div>
-
         );
     }
 }

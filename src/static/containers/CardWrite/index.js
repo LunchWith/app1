@@ -13,6 +13,17 @@ class CardWriteView extends React.Component {
         }).isRequired,
     }
 
+    constructor(props) {
+        super(props),
+
+        this.state = {
+            contents: '',
+            videoid: '',
+            imageName: 'image',
+            imageFile: null,
+        };
+    }
+
     handleChange = (e) => {
         this.setState({
             contents: e.target.value

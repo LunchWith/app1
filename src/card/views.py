@@ -52,12 +52,26 @@ class CardListView(GenericAPIView):
         for i in range(0, len(dataSet)):
             username = User.objects.values('first_name', 'last_name') \
                 .get(id=dataSet[i]['user_id'])
-            imagePath = Image.objects.values('imagePath') \
-                .get(card_id=dataSet[i]['id'])
-
             dataSet[i]['username'] \
                 = username['first_name'] \
                 + username['last_name']
-            dataSet[i]['imagePath'] = imagePath
+            
+            if dataSet[i]['image_yn'] == 1:
+                imagePath = Image.objects.values('imagePath') \
+                    .get(card_id=dataSet[i]['id'])
+                dataSet[i]['imagePath'] = imagePath['imagePath']
 
         return JsonResponse({'dataSet': list(dataSet)}, status=201)
+
+
+class CardPostSampleView(CreateModelMixin, GenericAPIView):
+    def post(self, request):
+        print('check point1')
+        print(request.META)
+        print('-------------------------')
+        print(request.POST)
+        print('----------------------')
+        print(request.data)
+        print('-------------------------')
+
+        return Response(status=201)

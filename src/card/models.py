@@ -9,6 +9,8 @@ class Card(models.Model):
     )
     contents = models.TextField()
     videoid = models.TextField(max_length=15, blank=True)
+    image_yn = models.IntegerField()
+    create_at = models.DateTimeField(auto_now_add=True)
 
 
 class Image(models.Model):

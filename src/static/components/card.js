@@ -26,10 +26,8 @@ class Card extends React.Component {
                         <TimeAgo date={data.create_at} />
                     </small> */}
                     <div className="modal-body">
-                        <div className="self-card-body">
-                            <Image imagePath={this.props.card.imagePath} />
-                            <Video videoid={this.props.card.videoid} />
-                        </div>
+                        {this.props.card.imagePath ? <Image imagePath={this.props.card.imagePath} /> : undefined}
+                        {this.props.card.videoid ? <Video videoid={this.props.card.videoid} /> : undefined}
                         <div className="self-card-contents">
                             {this.props.card.contents}
                         </div>
@@ -40,7 +38,7 @@ class Card extends React.Component {
                                 reply
                             </div>
                             <div className="col-xs-7">
-                                <button className="btn btn-success btn-lg"
+                                <button className="btn btn-danger btn-lg"
                                     type="button"
                                     // onClick={this.handlePost}
                                 >Purchase</button>
