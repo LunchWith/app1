@@ -40,7 +40,6 @@ class Card extends React.Component {
                             <div className="col-xs-7">
                                 <button className="btn btn-danger btn-lg"
                                     type="button"
-                                    // onClick={this.handlePost}
                                 >Purchase</button>
                             </div>
                         </div>

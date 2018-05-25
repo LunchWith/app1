@@ -65,4 +65,7 @@ class UserEmailConfirmationStatusView(GenericAPIView):
     def get(self, request):
         """Retrieve user current confirmed_email status."""
         user = self.request.user
-        return Response({'status': user.confirmed_email}, status=status.HTTP_200_OK)
+        return Response(
+            {'status': user.confirmed_email},
+            status=status.HTTP_200_OK
+        )

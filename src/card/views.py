@@ -21,10 +21,8 @@ class CardPostView(CreateModelMixin, GenericAPIView):
         # if authentication is alive
         querySet = AuthToken.objects.values('user_id').get(token_key=token_key)
         if querySet:
-            if len(request.data) == 0:
-                request.data = request.POST.copy()
-
             request.data['user'] = querySet['user_id']
+            print(request.data)
             self.create(request)
 
             # if image exists
@@ -41,7 +39,7 @@ class CardPostView(CreateModelMixin, GenericAPIView):
                 if imageSerializer.is_valid():
                     imageSerializer.save()
 
-            return Response(status=status.HTTP_201_OK)
+            return Response(status=201)
 
 
 class CardListView(GenericAPIView):
@@ -62,16 +60,3 @@ class CardListView(GenericAPIView):
                 dataSet[i]['imagePath'] = imagePath['imagePath']
 
         return JsonResponse({'dataSet': list(dataSet)}, status=201)
-
-
-class CardPostSampleView(CreateModelMixin, GenericAPIView):
-    def post(self, request):
-        print('check point1')
-        print(request.META)
-        print('-------------------------')
-        print(request.POST)
-        print('----------------------')
-        print(request.data)
-        print('-------------------------')
-
-        return Response(status=201)

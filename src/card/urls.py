@@ -12,9 +12,4 @@ urlpatterns = [
     url(_(r'^list/$'),
         card.views.CardListView.as_view(),
         name='cardList'),
-    
-    # sample
-    url(_(r'^postSample/$'),
-        card.views.CardPostSampleView.as_view(),
-        name='cardPostSample'),
 ]

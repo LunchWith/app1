@@ -2,8 +2,7 @@ import React from 'react';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import CardWriteView from '../CardWrite/index';
-import CardWriteSampleView from '../CardWriteSample/index';
+import CardWriteView from '../CardWrite/index';
 import CardListView from '../CardList/index';
 
 import './style.scss';
@@ -22,7 +21,7 @@ class HomeView extends React.Component {
     render() {
         return (
             <div className="container">
-                {this.props.isAuthenticated ? <CardWriteSampleView /> : null}
+                {this.props.isAuthenticated ? <CardWriteView /> : null}
                 <CardListView />
             </div>
         );

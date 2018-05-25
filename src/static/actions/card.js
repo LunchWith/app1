@@ -33,7 +33,35 @@ export function cardPostFailure() {
 }
 
 
-export function cardPost(contents, videoid, imageFile) {
+// export function cardPost(contents, videoid, imageFile) {
+//     return (dispatch) => {
+//         dispatch(cardPostRequest());
+
+//         console.log(imageFile);
+
+//         // return fetch(`${SERVER_URL}/api/v1/card/post/`, {
+//         //     method: 'post',
+//         //     headers: {
+//         //         'Accept': 'application/json',
+//         //         'Content-Type': 'application/json',
+//         //     },
+//         //     body: JSON.stringify({
+//         //         contents,
+//         //         videoid,
+//         //     }),
+//         // })
+//         //     .then((response) => {
+                
+//         //         // return {
+//         //         //     type: CARD_POST_SAMPLE_REQUEST,
+//         //         //     payload: response
+//         //         // };
+//         //     });
+//     };
+// }
+
+
+export function cardPost(contents, videoid, image_yn, imageFile) {
     return (dispatch) => {
         // inform CARD POST API is starting
         dispatch(cardPostRequest());
@@ -50,6 +78,7 @@ export function cardPost(contents, videoid, imageFile) {
                 body: JSON.stringify({
                     contents,
                     videoid,
+                    image_yn,
                 }),
             })
                 .then(checkHttpStatus)
@@ -65,6 +94,7 @@ export function cardPost(contents, videoid, imageFile) {
         const formData = new FormData();
         formData.append('contents', contents);
         formData.append('videoid', videoid);
+        formData.append('image_yn', image_yn);
         formData.append('imageFile', imageFile);
 
         const header = {

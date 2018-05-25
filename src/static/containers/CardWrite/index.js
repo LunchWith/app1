@@ -1,131 +1,165 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { reduxForm } from 'redux-form';
+import _ from 'lodash';
+
 
 import * as actionCreators from '../../actions/card';
 
 
+const FIELDS = {
+    contents: {
+        tag: 'textarea',
+        type: undefined,
+        className: 'form-control',
+        placeholder: 'Write down your contents',
+        rows: 4,
+    },
+};
+
+
+const FIELDS_VIDEO = {
+    videoid: {
+        tag: 'input',
+        type: 'text',
+        className: 'form-control input-sm',
+        placeholder: 'Youtube video-ID'
+    },
+};
+
+
+const FIELDS_IMAGE = {
+    imageFileName: {
+        tag: 'input',
+        type: 'text',
+        className: 'form-control input-md',
+        placeholder: 'Image',
+        disabled: 'disabled',
+    },
+
+    imageFile: {
+        tag: 'input',
+        type: 'file',
+        className: 'hide',
+    },
+};
+
+
 class CardWriteView extends React.Component {
     static propTypes = {
+        handleSubmit: PropTypes.func.isRequired,
+        fields: PropTypes.shape.isRequired,
         actions: PropTypes.shape({
-            cardPost: PropTypes.func.isRequired
+            cardPost: PropTypes.func.isRequired,
         }).isRequired,
     }
 
-    constructor(props) {
-        super(props),
+    onSubmit = (values) => {
+        const contents = values.contents;
+        const videoid = values.videoid;
+        const imageFile = values.imageFile ? values.imageFile[0] : null;
+        const imageYN = imageFile ? 1 : 0;
 
-        this.state = {
-            contents: '',
-            videoid: '',
-            imageName: 'image',
-            imageFile: null,
-        };
-    }
-
-    handleChange = (e) => {
-        this.setState({
-            contents: e.target.value
-        });
-    }
-
-    handleChangeVideo = (e) => {
-        this.setState({
-            videoid: e.target.value
-        });
-    }
-
-    handleChangeImage = (e) => {
-        this.setState({
-            imageFile: e.target.files[0],
-            imageName: e.target.files[0].name
+        this.props.actions.cardPost(contents, videoid, imageYN, imageFile).then({
         });
     }
 
     handleClickImage = () => {
-        document.getElementsByClassName('imageUpload')[0].click();
+        document.getElementsByClassName('hide')[0].click();
     }
 
-    handlePost = () => {
-        const contents = this.state.contents;
-        const videoid = this.state.videoid;
-        const imageFile = this.state.imageFile;
+    renderField = (fieldItems, field) => {
+        const fieldHelper = this.props.fields[field];
+        const fieldRedColor = fieldHelper.touched && fieldHelper.invalid ? 'has-error text-danger' : '';
 
-        this.props.actions.cardPost(contents, videoid, imageFile);
-    }
+        const imageObject = document.getElementsByClassName('hide')[0];
+        const imageFile = imageObject ? imageObject.value : undefined;
+        const imageFileName = imageFile ? imageObject.files[0].name : undefined;
 
-    render() {
+        const placeholder = field === 'imageFileName' && imageFileName ? imageFileName : fieldItems.placeholder;
+
         return (
-            <div className="modal-dialog">
-                <div className="modal-content">
-                    <div className="modal-body">
-                        <div className="form">
-                            <div className="form-group">
-                                <textarea className="form-control"
-                                    placeholder="Write down your memo"
-                                    rows="4"
-                                    value={this.state.contents}
-                                    onChange={this.handleChange}
-                                />
-                            </div>
-                            <div className="input-group">
-                                <div className="input-group-addon">
-                                    <span className="glyphicon glyphicon-facetime-video" />
-                                </div>
-                                <input className="form-control input-sm"
-                                    type="text"
-                                    placeholder="Youtube video-ID"
-                                    value={this.state.videoid}
-                                    onChange={this.handleChangeVideo}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="modal-footer">
-                        <div className="row">
-                            <div className="col-xs-5">
-                                <div className="input-group">
-                                    <div className="input-group-addon">
-                                        <a onClick={this.handleClickImage}>
-                                            <i className="glyphicon glyphicon-picture" />
-                                        </a>
-                                    </div>
-                                    <input className="form-control input-md"
-                                        type="text"
-                                        placeholder={this.state.imageName}
-                                        disabled
-                                    />
-                                    <div className="hide">
-                                        <input className="imageUpload"
-                                            type="file"
-                                            onChange={this.handleChangeImage}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-xs-7">
-                                <button className="btn btn-primary"
-                                    type="button"
-                                    onClick={this.handlePost}
-                                >POST</button>
-                            </div>
-                        </div>
-                    </div>
+            <div className={`form-group ${fieldRedColor}`} key={field}>
+                <fieldItems.tag className={fieldItems.className}
+                    type={fieldItems.type}
+                    placeholder={placeholder}
+                    rows={fieldItems.rows}
+                    disabled={fieldItems.disabled}
+                    {...fieldHelper}
+                />
+                <div className="text-help">
+                    {fieldHelper.touched ? fieldHelper.error : ''}
                 </div>
             </div>
         );
     }
+
+    render() {
+        return (
+            <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-body">
+                            {_.map(FIELDS, this.renderField)}
+                            <div className="input-group">
+                                <div className="input-group-addon">
+                                    <span className="glyphicon glyphicon-facetime-video" />
+                                </div>
+                                {_.map(FIELDS_VIDEO, this.renderField)}
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <div className="row">
+                                <div className="col-xs-5">
+                                    <div className="input-group">
+                                        <div className="input-group-addon">
+                                            <a onClick={this.handleClickImage}>
+                                                <i className="glyphicon glyphicon-picture" />
+                                            </a>
+                                        </div>
+                                        {_.map(FIELDS_IMAGE, this.renderField)}
+                                    </div>
+                                </div>
+                                <div className="col-xs-7">
+                                    <button className="btn btn-primary"
+                                        type="submit"
+                                    >POST</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        );
+    }
+}
+
+
+function validate(values) {
+    const errors = {};
+
+    _.each(FIELDS, (type, field) => {
+        if (!values[field]) {
+            errors[field] = `Enter the ${field}`;
+        }
+    });
+    return errors;
 }
 
 
 const mapDispatchToProps = (dispatch) => {
     return {
         dispatch,
-        actions: bindActionCreators(actionCreators, dispatch)
+        actions: bindActionCreators(actionCreators, dispatch),
     };
 };
 
 
-export default connect(null, mapDispatchToProps)(CardWriteView);
+export default reduxForm({
+    form: 'CardPostViewForm',
+    fields: _.keys(FIELDS).concat(_.keys(FIELDS_VIDEO)).concat(_.keys(FIELDS_IMAGE)), // ['contents', 'videoid', ... ]
+    validate,
+})(connect(null, mapDispatchToProps)(CardWriteView));
 export { CardWriteView as CardWriteViewNotConnected };
