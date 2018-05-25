@@ -61,5 +61,6 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
+
 export default connect(mapStateToProps, mapDispatchToProps)(CardListView);
-export { CardListView as CardListViewNoConnected };
+export { CardListView as CardListViewNotConnected };

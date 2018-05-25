@@ -1,36 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import _ from 'lodash';
 
 import * as actionCreators from '../../actions/cardSample';
 
 
-const FIELDS = {
-    contents: {
-        id: 1,
-        type: 'textarea',
-    },
-
-    title: {
-        id: 2,
-        type: 'input',
-    },
-
-    title3: {
-        id: 3,
-        type: 'input',
-    },
-};
-
 class CardPostSampleView extends React.Component {
     static propTypes = {
         handleSubmit: PropTypes.func.isRequired,
-        fields: PropTypes.shape({
-            contents: PropTypes.object.isRequired
-        }).isRequired,
+        // fields: PropTypes.shape({
+        //     contents: PropTypes.object.isRequired
+        // }).isRequired,
         actions: PropTypes.shape({
             cardPostSample: PropTypes.func.isRequired,
         }).isRequired,
@@ -42,18 +24,18 @@ class CardPostSampleView extends React.Component {
         });
     }
 
-    renderField = (fieldConfig, field) => {
-        const fieldHelper = this.props.fields[field];
-        const fieldRedColor = fieldHelper.touched && fieldHelper.invalid ? 'has-error text-danger' : '';
+    renderField = (fields) => {
+        const { meta: { touched, error } } = fields;
 
         return (
-            <div className={`form-group ${fieldRedColor}`} key={fieldConfig.id}>
-                <fieldConfig.type type="text"
-                    className="form-control"
-                    {...fieldHelper.touched}
+            <div className="form-group">
+                <span>{fields.label}</span>
+                <input className="form-control"
+                    type="text"
+                    {...fields.input}
                 />
                 <div className="text-help">
-                    {fieldHelper.touched ? fieldHelper.error : ''}
+                    {touched ? error : ''}
                 </div>
             </div>
         );
@@ -62,7 +44,10 @@ class CardPostSampleView extends React.Component {
     render() {
         return (
             <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
-                {_.map(FIELDS, this.renderField)}
+                <Field label="Post Contents"
+                    name="contents"
+                    component={this.renderField}
+                />
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>
         );
@@ -73,12 +58,9 @@ class CardPostSampleView extends React.Component {
 function validate(values) {
     const errors = {};
 
-    _.each(FIELDS, (type, field) => {
-        if (!values[field]) {
-            errors[field] = `Enter a ${field}`;
-        }
-    });
-
+    if (!values.contents) {
+        errors.contents = 'Enter contents';
+    }
     return errors;
 }
 
@@ -93,6 +75,6 @@ const mapDispatchToProps = (dispatch) => {
 
 export default reduxForm({
     form: 'CardPostSampleViewForm',
-    fields: _.keys(FIELDS),
+    fields: ['contents'],
     validate,
 })(connect(null, mapDispatchToProps)(CardPostSampleView));
