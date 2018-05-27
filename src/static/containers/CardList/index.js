@@ -2,9 +2,17 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import * as actionCreators from '../../actions/card';
 import Card from '../../components/card';
+
+const style = {
+    height: 80,
+    border: '1px solid green',
+    margin: 6,
+    padding: 8,
+};
 
 
 class CardListView extends React.Component {
@@ -17,6 +25,7 @@ class CardListView extends React.Component {
                 videoid: PropTypes.string,
             })
         ),
+        // hasMoreItems: PropTypes.bool.isRequired,
         actions: PropTypes.shape({
             cardList: PropTypes.func.isRequired
         }).isRequired,
@@ -24,24 +33,39 @@ class CardListView extends React.Component {
 
     static defaultProps = {
         dataSet: [],
+        // hasMoreItems: true,
+        // nextHref: null
     }
 
-    componentWillMount() {
-        this.props.actions.cardList();
+    state = {
+        items: Array.from({ length: 13 })
     }
 
+    fetchMoreData = () => {
+        setTimeout(() => {
+            this.setState({
+                items: this.state.items.concat(Array.from({ length: 6 }))
+            });
+        }, 1500);
+    }
 
     render() {
-        const mapToComponent = (dataSet) => {
-            return dataSet.map((card, i) => {
-                return <Card key={card.id} card={card} />;
-            });
-        };
-
         return (
             <div>
-                {this.props.dataSet !== undefined ? mapToComponent(this.props.dataSet) : undefined }
+                <InfiniteScroll dataLength={this.state.items.length}
+                    next={this.fetchMoreData}
+                    hasMore={true}
+                    loader={<h4>Loading...</h4>}
+                >
+                    {this.state.items.map((i, index) => (
+                        <div style={style} key={index}>
+                            div - #{index}
+                        </div>
+                    ))}
+                </InfiniteScroll>
             </div>
+
+
         );
     }
 }
