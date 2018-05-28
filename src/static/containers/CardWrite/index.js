@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { reduxForm } from 'redux-form';
+import { reduxForm, reset } from 'redux-form';
 import _ from 'lodash';
 
 
@@ -61,8 +61,9 @@ class CardWriteView extends React.Component {
         const imageFile = values.imageFile ? values.imageFile[0] : null;
         const imageYN = imageFile ? 1 : 0;
 
-        this.props.actions.cardPost(contents, videoid, imageYN, imageFile).then({
-        });
+        this.props.actions.cardPost(contents, videoid, imageYN, imageFile).then(
+            reset('CardPostViewForm')
+        );
     }
 
     handleClickImage = () => {

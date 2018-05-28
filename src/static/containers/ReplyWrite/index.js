@@ -19,12 +19,14 @@ const FIELDS = {
 
 class ReplyWriteView extends React.Component {
     static propTypes = {
+        id: PropTypes.number.isRequired,
         handleSubmit: PropTypes.func.isRequired,
         fields: PropTypes.shape.isRequired,
         actions: PropTypes.shape({
             replyPost: PropTypes.func.isRequired,
         }).isRequired,
-        userName: PropTypes.string.isRequired,
+        userFirstName: PropTypes.string.isRequired,
+        userLastName: PropTypes.string.isRequired,
     }
 
     onSubmit = (values) => {
@@ -37,32 +39,32 @@ class ReplyWriteView extends React.Component {
     renderField = (fieldItems, field) => {
         const fieldHelper = this.props.fields[field];
         const fieldRedColor = fieldHelper.touched && fieldHelper.invalid ? 'has-error text-danger' : '';
-
         return (
-            <div className={`form-group ${fieldRedColor}`} key={field}>
+            <div className={`form-group ${fieldRedColor}`}>
                 <fieldItems.tag className={fieldItems.className}
                     type={fieldItems.type}
                     placeholder={fieldItems.placeholder}
                     rows={fieldItems.rows}
                     disabled={fieldItems.disabled}
+                    key={this.props.id}
                     {...fieldHelper}
                 />
                 <div className="text-help">
                     {fieldHelper.touched ? fieldHelper.error : ''}
                 </div>
             </div>
-
         );
     }
 
     render() {
         return (
-            <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
+            <form onSubmit={this.props.handleSubmit(this.onSubmit)} key={this.props.id}>
                 <div className="row">
-                    <div className="col-xs-3 text-center">
-                        {this.props.userName}
+                    <div className="col-xs-4 text-center">
+                        {this.props.userFirstName}
+                        {this.props.userLastName}
                     </div>
-                    <div className="col-xs-6 text-right">
+                    <div className="col-xs-5 text-right">
                         {_.map(FIELDS, this.renderField)}
                     </div>
                     <div className="col-xs-3 text-center">
@@ -88,11 +90,14 @@ function validate(values) {
     return errors;
 }
 
+
 const mapStateToProps = (state) => {
     return {
-        userName: state.auth.userName
+        userFirstName: state.auth.userFirstName,
+        userLastName: state.auth.userLastName,
     };
 };
+
 
 const mapDispatchToProps = (dispatch) => {
     return {

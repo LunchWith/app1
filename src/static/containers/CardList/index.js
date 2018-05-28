@@ -46,7 +46,7 @@ class CardListView extends React.Component {
                 <InfiniteScroll hasMore
                     dataLength={this.props.dataSet.length}
                     next={this.loadItems}
-                    loader={<h4>Loading...</h4>}
+                    loader={<h4 className="text-center loading">Loading...</h4>}
                 >
                     {items(this.props.dataSet)}
                 </InfiniteScroll>

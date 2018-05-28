@@ -26,7 +26,7 @@ class CardPostView(CreateModelMixin, GenericAPIView):
             self.create(request)
 
             # if image exists
-            if request.FILES['imageFile']:
+            if len(request.FILES) != 0:
                 card = Card.objects.values('id') \
                     .filter(user_id=request.data['user']) \
                     .order_by('-id')[:1]

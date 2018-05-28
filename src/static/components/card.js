@@ -10,6 +10,7 @@ import ReplyWriteView from '../containers/ReplyWrite/index';
 class Card extends React.Component {
     static propTypes = {
         card: PropTypes.shape({
+            id: PropTypes.number.isRequired,
             username: PropTypes.string.isRequired,
             contents: PropTypes.string.isRequired,
             imagePath: PropTypes.string,
@@ -46,7 +47,7 @@ class Card extends React.Component {
                     </div>
                     <div className="modal-footer">
                         {/* <ReplyListView /> */}
-                        {this.props.isAuthenticated ? <ReplyWriteView /> : null}
+                        {this.props.isAuthenticated ? <ReplyWriteView form={this.props.card.id} /> : null}
                     </div>
                 </div>
             </div>
