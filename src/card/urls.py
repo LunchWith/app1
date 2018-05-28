@@ -12,4 +12,7 @@ urlpatterns = [
     url(_(r'^list/$'),
         card.views.CardListView.as_view(),
         name='cardList'),
+    url(_(r'^list/(?P<id>\d+)/$'),
+        card.views.CardListView.as_view(),
+        name='cardList'),
 ]

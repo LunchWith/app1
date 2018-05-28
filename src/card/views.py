@@ -43,9 +43,15 @@ class CardPostView(CreateModelMixin, GenericAPIView):
 
 
 class CardListView(GenericAPIView):
-    def get(self, request):
-        dataSet = Card.objects.values() \
-            .order_by('-id')[:6]
+    def get(self, request, id):
+        id = int(id)
+        if id == 0:
+            dataSet = Card.objects.values() \
+                .order_by('-id')[:6]
+        else:
+            dataSet = Card.objects.filter(id__lt=id) \
+                .values() \
+                .order_by('-id')[:6]
 
         for i in range(0, len(dataSet)):
             username = User.objects.values('first_name', 'last_name') \

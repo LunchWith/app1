@@ -7,6 +7,14 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import * as actionCreators from '../../actions/card';
 import Card from '../../components/card';
 
+const style = {
+    height: 400,
+    border: '1px solid green',
+    margin: 6,
+    padding: 8,
+};
+
+
 class CardListView extends React.Component {
     static propTypes = {
         dataSet: PropTypes.arrayOf(
@@ -25,31 +33,37 @@ class CardListView extends React.Component {
 
     static defaultProps = {
         dataSet: [],
+        // hasMoreItems: true,
+        // nextHref: null
     }
 
-    componentWillMount() {
-        this.props.actions.cardList();
+    state = {
+        items: Array.from({ length: 6 })
     }
 
-    loadItems = () => {
-        this.props.actions.cardList(this.props.dataSet);
+    fetchMoreData = () => {
+        setTimeout(() => {
+            this.setState({
+                items: this.state.items.concat(Array.from({ length: 6 }))
+            });
+        }, 1500);
     }
 
     render() {
-        const items = (dataSet) => {
-            return dataSet.map((card, i) => {
-                return <Card key={i} card={card} />;
-            });
-        };
-
         return (
             <div>
                 <InfiniteScroll hasMore
-                    dataLength={this.props.dataSet.length}
-                    next={this.loadItems}
+                    dataLength={this.state.items.length}
+                    next={this.fetchMoreData}
                     loader={<h4>Loading...</h4>}
                 >
-                    {items(this.props.dataSet)}
+                    {this.state.items.map((i, index) => {
+                        return (
+                            <div style={style} key={index}>
+                                div - #{index}
+                            </div>
+                        );
+                    })}
                 </InfiniteScroll>
             </div>
 
@@ -61,7 +75,7 @@ class CardListView extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        dataSet: state.card.dataSet
+        dataSet: state.card.dataSet,
     };
 };
 

@@ -33,34 +33,6 @@ export function cardPostFailure() {
 }
 
 
-// export function cardPost(contents, videoid, imageFile) {
-//     return (dispatch) => {
-//         dispatch(cardPostRequest());
-
-//         console.log(imageFile);
-
-//         // return fetch(`${SERVER_URL}/api/v1/card/post/`, {
-//         //     method: 'post',
-//         //     headers: {
-//         //         'Accept': 'application/json',
-//         //         'Content-Type': 'application/json',
-//         //     },
-//         //     body: JSON.stringify({
-//         //         contents,
-//         //         videoid,
-//         //     }),
-//         // })
-//         //     .then((response) => {
-                
-//         //         // return {
-//         //         //     type: CARD_POST_SAMPLE_REQUEST,
-//         //         //     payload: response
-//         //         // };
-//         //     });
-//     };
-// }
-
-
 export function cardPost(contents, videoid, image_yn, imageFile) {
     return (dispatch) => {
         // inform CARD POST API is starting
@@ -146,12 +118,17 @@ export function cardListFailure() {
 }
 
 
-export function cardList() {
+export function cardList(dataSet) {
     return (dispatch) => {
         // inform CARD LIST API is starting
         dispatch(cardListRequest());
 
-        return fetch(`${SERVER_URL}/api/v1/card/list/`, {
+        let id = 0;
+        if (dataSet !== undefined) {
+            id = dataSet[dataSet.length - 1].id;
+        }
+
+        return fetch(`${SERVER_URL}/api/v1/card/list/${id}/`, {
             headers: {
                 Accept: 'application/json'
             }
@@ -159,7 +136,13 @@ export function cardList() {
             .then(checkHttpStatus)
             .then(parseJSON)
             .then((response) => {
-                dispatch(cardListSuccess(response.dataSet));
+                let result = [];
+                if (dataSet === undefined) {
+                    result = response.dataSet;
+                } else {
+                    result = dataSet.concat(response.dataSet);
+                }
+                dispatch(cardListSuccess(result));
             })
             .catch((error) => {
                 dispatch(cardListFailure());

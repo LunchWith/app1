@@ -13,7 +13,6 @@ export default function cardReducer(state = initialState, action) {
     switch (action.type) {
         case CARD_LIST_REQUEST:
             return Object.assign({}, state, {
-                dataSet: [],
             });
 
         case CARD_LIST_SUCCESS:
@@ -22,7 +21,6 @@ export default function cardReducer(state = initialState, action) {
             });
         case CARD_LIST_FAILURE:
             return Object.assign({}, state, {
-                dataSet: [],
             });
 
         default:
