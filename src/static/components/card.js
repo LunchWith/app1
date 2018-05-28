@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import TimeAgo from 'react-timeago';
+import { connect } from 'react-redux';
 import Video from './video';
 import Image from './image';
-// import TimeAgo from 'react-timeago';
+import ReplyWriteView from '../containers/ReplyWrite/index';
 
 
 class Card extends React.Component {
@@ -12,7 +14,9 @@ class Card extends React.Component {
             contents: PropTypes.string.isRequired,
             imagePath: PropTypes.string,
             videoid: PropTypes.string,
+            create_at: PropTypes.string.isRequired,
         }).isRequired,
+        isAuthenticated: PropTypes.bool.isRequired,
     }
 
     render() {
@@ -20,11 +24,19 @@ class Card extends React.Component {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        {this.props.card.username}
+                        <div className="row">
+                            <div className="col-xs-6">
+                                <i className="glyphicon glyphicon-user" />&nbsp;
+                                {this.props.card.username}
+                            </div>
+                            <div className="col-xs-6 text-right">
+                                <small>
+                                    <TimeAgo date={this.props.card.create_at} />
+                                </small>&nbsp;&nbsp;
+                                <i className="glyphicon glyphicon-time" />
+                            </div>
+                        </div>
                     </div>
-                    {/* <small className="text-right">
-                        <TimeAgo date={data.create_at} />
-                    </small> */}
                     <div className="modal-body">
                         {this.props.card.imagePath ? <Image imagePath={this.props.card.imagePath} /> : undefined}
                         {this.props.card.videoid ? <Video videoid={this.props.card.videoid} /> : undefined}
@@ -33,16 +45,8 @@ class Card extends React.Component {
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <div className="row">
-                            <div className="col-xs-5 text-left">
-                                reply
-                            </div>
-                            <div className="col-xs-7">
-                                <button className="btn btn-danger btn-lg"
-                                    type="button"
-                                >Purchase</button>
-                            </div>
-                        </div>
+                        {/* <ReplyListView /> */}
+                        {this.props.isAuthenticated ? <ReplyWriteView /> : null}
                     </div>
                 </div>
             </div>
@@ -51,4 +55,13 @@ class Card extends React.Component {
 }
 
 
-export default Card;
+const mapStateToProps = (state) => {
+    return {
+        userName: state.auth.userName,
+        isAuthenticated: state.auth.isAuthenticated,
+    };
+};
+
+
+export default connect(mapStateToProps, null)(Card);
+export { Card as CardNotConnected };

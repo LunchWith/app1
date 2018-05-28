@@ -12,7 +12,6 @@ import * as actionCreators from '../../actions/card';
 const FIELDS = {
     contents: {
         tag: 'textarea',
-        type: undefined,
         className: 'form-control',
         placeholder: 'Write down your contents',
         rows: 4,

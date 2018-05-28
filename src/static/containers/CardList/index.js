@@ -17,7 +17,6 @@ class CardListView extends React.Component {
                 videoid: PropTypes.string,
             })
         ),
-        // hasMoreItems: PropTypes.bool.isRequired,
         actions: PropTypes.shape({
             cardList: PropTypes.func.isRequired
         }).isRequired,
@@ -52,8 +51,6 @@ class CardListView extends React.Component {
                     {items(this.props.dataSet)}
                 </InfiniteScroll>
             </div>
-
-
         );
     }
 }
