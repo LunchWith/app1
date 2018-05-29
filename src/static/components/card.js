@@ -4,6 +4,7 @@ import TimeAgo from 'react-timeago';
 import { connect } from 'react-redux';
 import Video from './video';
 import Image from './image';
+import ReplyListView from '../containers/ReplyList/index';
 import ReplyWriteView from '../containers/ReplyWrite/index';
 
 
@@ -46,8 +47,14 @@ class Card extends React.Component {
                         </div>
                     </div>
                     <div className="modal-footer">
-                        {/* <ReplyListView /> */}
-                        {this.props.isAuthenticated ? <ReplyWriteView form={this.props.card.id} /> : null}
+                        <ReplyListView cardId={this.props.card.id} key={this.props.card.id} />
+                        {this.props.isAuthenticated ?
+                            <ReplyWriteView form={'replyWriteViewForm_'.concat(this.props.card.id)}
+                                cardId={this.props.card.id}
+                            />
+                            :
+                            null
+                        }
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-from disposable_email_checker.validators import validate_disposable_email
+# from disposable_email_checker.validators import validate_disposable_email
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email as django_validate_email
 from django.db import transaction

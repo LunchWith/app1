@@ -33,7 +33,7 @@ export function replyPostFailure() {
 }
 
 
-export function replyPost(contents) {
+export function replyPost(cardId, contents) {
     return (dispatch) => {
         // inform REPLY POST API is starting
         dispatch(replyPostRequest());
@@ -47,6 +47,7 @@ export function replyPost(contents) {
                 'Authorization': `${token}`
             },
             body: JSON.stringify({
+                card: cardId,
                 contents,
             }),
         })
@@ -57,6 +58,52 @@ export function replyPost(contents) {
             })
             .catch((error) => {
                 dispatch(replyPostFailure());
+            });
+    };
+}
+
+
+export function replyListRequest() {
+    return {
+        type: REPLY_LIST_REQUEST
+    };
+}
+
+
+export function replyListSuccess(dataSet) {
+    return {
+        type: REPLY_LIST_SUCCESS,
+        payload: {
+            dataSet
+        }
+    };
+}
+
+
+export function replyListFailure() {
+    return {
+        type: REPLY_LIST_FAILURE
+    };
+}
+
+
+export function replyList(cardId) {
+    return (dispatch) => {
+        // inform REPLY LIST API is starting
+        dispatch(replyListRequest());
+
+        return fetch(`${SERVER_URL}/api/v1/reply/list/${cardId}/`, {
+            headers: {
+                Accept: 'application/json'
+            }
+        })
+            .then(checkHttpStatus)
+            .then(parseJSON)
+            .then((response) => {
+                dispatch(replyListSuccess(response.dataSet));
+            })
+            .catch((error) => {
+                dispatch(replyListFailure());
             });
     };
 }

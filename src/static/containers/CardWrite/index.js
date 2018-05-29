@@ -49,7 +49,8 @@ const FIELDS_IMAGE = {
 class CardWriteView extends React.Component {
     static propTypes = {
         handleSubmit: PropTypes.func.isRequired,
-        fields: PropTypes.shape.isRequired,
+        fields: PropTypes.shape({
+        }).isRequired,
         actions: PropTypes.shape({
             cardPost: PropTypes.func.isRequired,
         }).isRequired,
@@ -62,7 +63,7 @@ class CardWriteView extends React.Component {
         const imageYN = imageFile ? 1 : 0;
 
         this.props.actions.cardPost(contents, videoid, imageYN, imageFile).then(
-            reset('CardPostViewForm')
+            // reset('CardPostViewForm')
         );
     }
 

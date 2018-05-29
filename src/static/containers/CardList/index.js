@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import * as actionCreators from '../../actions/card';
 import Card from '../../components/card';
+
 
 class CardListView extends React.Component {
     static propTypes = {
@@ -37,7 +38,7 @@ class CardListView extends React.Component {
     render() {
         const items = (dataSet) => {
             return dataSet.map((card, i) => {
-                return <Card key={i} card={card} />;
+                return <Card key={card.id} card={card} />;
             });
         };
 

@@ -19,9 +19,10 @@ const FIELDS = {
 
 class ReplyWriteView extends React.Component {
     static propTypes = {
-        id: PropTypes.number.isRequired,
+        cardId: PropTypes.number.isRequired,
         handleSubmit: PropTypes.func.isRequired,
-        fields: PropTypes.shape.isRequired,
+        fields: PropTypes.shape({
+        }).isRequired,
         actions: PropTypes.shape({
             replyPost: PropTypes.func.isRequired,
         }).isRequired,
@@ -30,9 +31,10 @@ class ReplyWriteView extends React.Component {
     }
 
     onSubmit = (values) => {
+        const cardId = this.props.cardId;
         const contents = values.contents;
 
-        this.props.actions.replyPost(contents).then({
+        this.props.actions.replyPost(cardId, contents).then({
         });
     }
 
@@ -40,13 +42,12 @@ class ReplyWriteView extends React.Component {
         const fieldHelper = this.props.fields[field];
         const fieldRedColor = fieldHelper.touched && fieldHelper.invalid ? 'has-error text-danger' : '';
         return (
-            <div className={`form-group ${fieldRedColor}`}>
+            <div className={`form-group ${fieldRedColor}`} key={field}>
                 <fieldItems.tag className={fieldItems.className}
                     type={fieldItems.type}
                     placeholder={fieldItems.placeholder}
                     rows={fieldItems.rows}
                     disabled={fieldItems.disabled}
-                    key={this.props.id}
                     {...fieldHelper}
                 />
                 <div className="text-help">
@@ -58,7 +59,7 @@ class ReplyWriteView extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.props.handleSubmit(this.onSubmit)} key={this.props.id}>
+            <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
                 <div className="row">
                     <div className="col-xs-4 text-center">
                         {this.props.userFirstName}

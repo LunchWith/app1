@@ -11,8 +11,9 @@ urlpatterns = [
     url(r'^api/v1/accounts/', include('accounts.urls', namespace='accounts')),
     url(r'^api/v1/getdata/', include('base.urls', namespace='base')),
     url(r'^api/v1/card/', include('card.urls', namespace='card')),
+    url(r'^api/v1/reply/', include('reply.urls', namespace='reply')),
 
-    # catch image url
+    # catch image url ------ [ settings.MEDIA_URL == '/imageStorage/' ]
     url(r'^%s/(?P<path>.*)$' % settings.MEDIA_URL.replace("/", ""),
         serve,
         {'document_root': settings.MEDIA_ROOT}),

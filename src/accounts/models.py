@@ -9,7 +9,8 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class MyUserManager(BaseUserManager):
-    def _create_user(self, email, password, first_name, last_name, is_staff, is_superuser, **extra_fields):
+    def _create_user(self, email, password, first_name, last_name, is_staff, \
+        is_superuser, **extra_fields):
         """
         Create and save an User with the given email, password, name and phone number.
 
