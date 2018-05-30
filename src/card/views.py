@@ -6,8 +6,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.http import JsonResponse
 
-from card.models import Card, Image
 from accounts.models import User
+from card.models import Card, Image
+from reply.models import Reply
 from card.serializers import CardSerializer, ImageSerializer
 
 
@@ -46,23 +47,50 @@ class CardListView(GenericAPIView):
     def get(self, request, id):
         id = int(id)
         if id == 0:
-            dataSet = Card.objects.values() \
+            querySetCard = Card.objects \
+                .values() \
                 .order_by('-id')[:6]
         else:
-            dataSet = Card.objects.filter(id__lt=id) \
+            querySetCard = Card.objects \
+                .filter(id__lt=id) \
                 .values() \
                 .order_by('-id')[:6]
 
-        for i in range(0, len(dataSet)):
-            username = User.objects.values('first_name', 'last_name') \
-                .get(id=dataSet[i]['user_id'])
-            dataSet[i]['username'] \
-                = username['first_name'] \
-                + username['last_name']
-            
-            if dataSet[i]['image_yn'] == 1:
-                imagePath = Image.objects.values('imagePath') \
-                    .get(card_id=dataSet[i]['id'])
-                dataSet[i]['imagePath'] = imagePath['imagePath']
+        dataSet = []
+        if querySetCard:
+            for card in querySetCard:
+                # card information
+                username = User.objects \
+                    .values('first_name', 'last_name') \
+                    .get(id=card['user_id'])
+                card['username'] \
+                    = username['first_name'] \
+                    + username['last_name']
+                
+                # image information
+                if card['image_yn'] == 1:
+                    imagePath = Image.objects \
+                        .values('imagePath') \
+                        .get(card_id=card['id'])
+                    card['imagePath'] = imagePath['imagePath']
 
-        return JsonResponse({'dataSet': list(dataSet)}, status=201)
+                # bid information
+                superBidder = Reply.objects\
+                    .values('user_id', 'bid_price', 'contents', 'create_at',) \
+                    .filter(card_id=card['id']) \
+                    .order_by('-bid_price')[:1]
+
+                if superBidder:
+                    superBidderUsername = User.objects \
+                        .values('first_name', 'last_name') \
+                        .get(id=superBidder[0]['user_id'])
+                    superBidder[0]['username'] \
+                        = superBidderUsername['first_name'] \
+                        + superBidderUsername['last_name']
+
+                    card['superBidder'] = superBidder[0]
+                
+                # update dataSet
+                dataSet.append(card)
+
+            return JsonResponse({'dataSet': dataSet}, status=201)

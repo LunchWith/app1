@@ -136,13 +136,13 @@ export function cardList(dataSet) {
             .then(checkHttpStatus)
             .then(parseJSON)
             .then((response) => {
-                let result = [];
+                let connectedDataSet = [];
                 if (dataSet === undefined) {
-                    result = response.dataSet;
+                    connectedDataSet = response.dataSet;
                 } else {
-                    result = dataSet.concat(response.dataSet);
+                    connectedDataSet = dataSet.concat(response.dataSet);
                 }
-                dispatch(cardListSuccess(result));
+                dispatch(cardListSuccess(connectedDataSet));
             })
             .catch((error) => {
                 dispatch(cardListFailure());

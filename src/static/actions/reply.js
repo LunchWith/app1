@@ -33,7 +33,7 @@ export function replyPostFailure() {
 }
 
 
-export function replyPost(cardId, contents) {
+export function replyPost(cardId, bidPrice, contents) {
     return (dispatch) => {
         // inform REPLY POST API is starting
         dispatch(replyPostRequest());
@@ -48,6 +48,7 @@ export function replyPost(cardId, contents) {
             },
             body: JSON.stringify({
                 card: cardId,
+                bid_price: bidPrice,
                 contents,
             }),
         })

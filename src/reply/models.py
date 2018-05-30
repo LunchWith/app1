@@ -12,5 +12,6 @@ class Reply(models.Model):
         User,
         on_delete=models.CASCADE,
     )
+    bid_price = models.IntegerField()
     contents = models.TextField()
     create_at = models.DateTimeField(auto_now_add=True)

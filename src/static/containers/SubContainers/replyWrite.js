@@ -8,11 +8,20 @@ import _ from 'lodash';
 import * as actionCreators from '../../actions/reply';
 
 
-const FIELDS = {
+const FIELDS_BIDPRICE = {
+    bidPrice: {
+        tag: 'input',
+        type: 'text',
+        className: 'form-control text-right',
+        placeholder: '$ 100.00',
+    },
+};
+
+const FIELDS_REPLY = {
     contents: {
         tag: 'input',
         type: 'text',
-        className: 'form-control',
+        className: 'form-control text-center',
         placeholder: 'Write down your bid-messages',
     },
 };
@@ -32,9 +41,10 @@ class ReplyWriteView extends React.Component {
 
     onSubmit = (values) => {
         const cardId = this.props.cardId;
+        const bidPrice = values.bidPrice;
         const contents = values.contents;
 
-        this.props.actions.replyPost(cardId, contents);
+        this.props.actions.replyPost(cardId, bidPrice, contents);
     }
 
     renderField = (fieldItems, field) => {
@@ -60,18 +70,23 @@ class ReplyWriteView extends React.Component {
         return (
             <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
                 <div className="row">
-                    <div className="col-xs-4 text-left reply">
-                        {this.props.userFirstName}
-                        {this.props.userLastName}
+                    <div className="col-xs-4 text-left reply-sub">
+                        <strong>
+                            {this.props.userFirstName}
+                            {this.props.userLastName}
+                        </strong>
                     </div>
                     <div className="col-xs-5 text-left">
-                        {_.map(FIELDS, this.renderField)}
+                        {_.map(FIELDS_BIDPRICE, this.renderField)}
                     </div>
                     <div className="col-xs-3 text-center">
                         <button className="btn btn-danger btn-md"
                             type="submit"
                         >Purchase</button>
                     </div>
+                </div>
+                <div>
+                    {_.map(FIELDS_REPLY, this.renderField)}
                 </div>
             </form>
         );
@@ -82,7 +97,7 @@ class ReplyWriteView extends React.Component {
 function validate(values) {
     const errors = {};
 
-    _.each(FIELDS, (type, field) => {
+    _.each(FIELDS_BIDPRICE, (type, field) => {
         if (!values[field]) {
             errors[field] = `Enter the ${field}`;
         }
@@ -109,7 +124,7 @@ const mapDispatchToProps = (dispatch) => {
 
 export default reduxForm({
     form: 'ReplyWriteViewForm',
-    fields: _.keys(FIELDS),
+    fields: _.keys(FIELDS_BIDPRICE).concat(_.keys(FIELDS_REPLY)),
     validate,
 })(connect(mapStateToProps, mapDispatchToProps)(ReplyWriteView));
 export { ReplyWriteView as ReplyWriteViewNotConnected };
