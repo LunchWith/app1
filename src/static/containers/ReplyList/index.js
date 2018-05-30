@@ -10,13 +10,6 @@ import Reply from '../../components/reply';
 class ReplyListView extends React.Component {
     static propTypes = {
         cardId: PropTypes.number.isRequired,
-        dataSet: PropTypes.arrayOf(
-            PropTypes.shape({
-                username: PropTypes.string.isRequired,
-                contents: PropTypes.string.isRequired,
-                create_at: PropTypes.string.isRequired,
-            })
-        ),
         actions: PropTypes.shape({
             replyList: PropTypes.func.isRequired
         }).isRequired,
@@ -31,27 +24,24 @@ class ReplyListView extends React.Component {
     }
 
     render() {
-        console.log(this.props.cardId);
-        console.log(this.props.dataSet);
-        // const items = (dataSet) => {
-        //     return dataSet.map((reply, i) => {
-        //         return <Reply key={reply.id} reply={reply} />;
-        //     });
-        // };
+        const items = (dataSet) => {
+            return dataSet.map((reply, i) => {
+                return <Reply key={reply.id} reply={reply} />;
+            });
+        };
 
         return (
-            <div>asdf</div>
-            // this.props.dataSet.length !== 0 ?
-            //     (<div>{items(this.props.dataSet)}</div>)
-            //     : null
+            this.props['dataSet_'.concat(this.props.cardId)] !== undefined ?
+                (<div>{items(this.props['dataSet_'.concat(this.props.cardId)])}</div>)
+                : null
         );
     }
 }
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
-        dataSet: state.reply.dataSet,
+        ['dataSet_'.concat(ownProps.cardId)]: state.reply['dataSet_'.concat(ownProps.cardId)]
     };
 };
 

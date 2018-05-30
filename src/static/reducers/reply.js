@@ -6,8 +6,9 @@ import {
 
 
 const initialState = {
-    dataSet: [],
+    dataSet_null: [],
 };
+
 
 export default function replyReducer(state = initialState, action) {
     switch (action.type) {
@@ -16,9 +17,17 @@ export default function replyReducer(state = initialState, action) {
             });
 
         case REPLY_LIST_SUCCESS:
+        {
+            let cardId = null;
+            if (action.payload.dataSet.length !== 0) {
+                cardId = action.payload.dataSet[0].card_id;
+            }
             return Object.assign({}, state, {
-                dataSet: action.payload.dataSet,
+                // reply → dynamic json key by card
+                ['dataSet_'.concat(cardId)]: action.payload.dataSet
             });
+        }
+
         case REPLY_LIST_FAILURE:
             return Object.assign({}, state, {
             });
