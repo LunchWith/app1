@@ -13,7 +13,7 @@ const FIELDS = {
         tag: 'input',
         type: 'text',
         className: 'form-control',
-        placeholder: 'Write down your bid-message',
+        placeholder: 'Write down your bid-messages',
     },
 };
 
@@ -34,8 +34,7 @@ class ReplyWriteView extends React.Component {
         const cardId = this.props.cardId;
         const contents = values.contents;
 
-        this.props.actions.replyPost(cardId, contents).then({
-        });
+        this.props.actions.replyPost(cardId, contents);
     }
 
     renderField = (fieldItems, field) => {
@@ -61,11 +60,11 @@ class ReplyWriteView extends React.Component {
         return (
             <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
                 <div className="row">
-                    <div className="col-xs-4 text-center">
+                    <div className="col-xs-4 text-left reply">
                         {this.props.userFirstName}
                         {this.props.userLastName}
                     </div>
-                    <div className="col-xs-5 text-right">
+                    <div className="col-xs-5 text-left">
                         {_.map(FIELDS, this.renderField)}
                     </div>
                     <div className="col-xs-3 text-center">

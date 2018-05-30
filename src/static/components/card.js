@@ -4,8 +4,8 @@ import TimeAgo from 'react-timeago';
 import { connect } from 'react-redux';
 import Video from './video';
 import Image from './image';
-import ReplyListView from '../containers/ReplyList/index';
-import ReplyWriteView from '../containers/ReplyWrite/index';
+import ReplyListView from '../containers/SubContainers/replyList';
+import ReplyWriteView from '../containers/SubContainers/replyWrite';
 
 
 class Card extends React.Component {

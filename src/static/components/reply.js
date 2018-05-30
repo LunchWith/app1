@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import TimeAgo from 'react-timeago';
 
 
 class Reply extends React.Component {
@@ -13,15 +14,15 @@ class Reply extends React.Component {
 
     render() {
         return (
-            <div className="row">
-                <div className="col-xs-4 text-center">
+            <div className="row reply">
+                <div className="col-xs-4 text-left">
                     {this.props.reply.username}
                 </div>
-                <div className="col-xs-5 text-right">
+                <div className="col-xs-5 text-left">
                     {this.props.reply.contents}
                 </div>
                 <div className="col-xs-3 text-center">
-                    {this.props.reply.create_at}
+                    <TimeAgo date={this.props.reply.create_at} />
                 </div>
             </div>
         );

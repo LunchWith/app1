@@ -3,8 +3,8 @@ import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import CardWriteView from '../CardWrite/index';
-import CardListView from '../CardList/index';
+import CardWriteView from '../SubContainers/cardWrite';
+import CardListView from '../SubContainers/cardList';
 
 import './style.scss';
 
