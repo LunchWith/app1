@@ -72,12 +72,13 @@ export function replyListRequest() {
 }
 
 
-export function replyListSuccess(dataSet, nextBidder) {
+export function replyListSuccess(dataSet, nextBidder, startPage) {
     return {
         type: REPLY_LIST_SUCCESS,
         payload: {
             dataSet,
             nextBidder,
+            startPage,
         }
     };
 }
@@ -90,12 +91,12 @@ export function replyListFailure() {
 }
 
 
-export function replyList(cardId) {
+export function replyList(dataSet, cardId, startPage) {
     return (dispatch) => {
         // inform REPLY LIST API is starting
         dispatch(replyListRequest());
 
-        return fetch(`${SERVER_URL}/api/v1/reply/list/${cardId}/`, {
+        return fetch(`${SERVER_URL}/api/v1/reply/list/${cardId}/${startPage}/`, {
             headers: {
                 Accept: 'application/json'
             }
@@ -103,7 +104,17 @@ export function replyList(cardId) {
             .then(checkHttpStatus)
             .then(parseJSON)
             .then((response) => {
-                dispatch(replyListSuccess(response.dataSet, response.nextBidder));
+                let connectedDataSet = [];
+                if (dataSet === undefined) {
+                    connectedDataSet = response.dataSet;
+                } else {
+                    connectedDataSet = dataSet.concat(response.dataSet);
+                }
+                dispatch(replyListSuccess(
+                    connectedDataSet,
+                    response.nextBidder,
+                    response.startPage
+                ));
             })
             .catch((error) => {
                 dispatch(replyListFailure());

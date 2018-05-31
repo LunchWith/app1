@@ -63,17 +63,16 @@ class ReplyHomeView extends React.Component {
                     :
                     undefined
                 }
-                {/* validate topBidder before topBidder.nextUser */}
+                {/* should validate topBidder before topBidder.nextBidder */}
                 <ReplyListView cardId={this.props.cardId}
-                    nextBidder={this.props.topBidder && this.props.topBidder.nextBidder ? 1 : 0}
+                    nextBidder={this.props.topBidder && this.props.topBidder.nextBidder}
                 />
                 {this.props.isAuthenticated ?
-                    (<div className="reply">
+                    <div className="reply">
                         <ReplyWriteView form={'replyWriteViewForm_'.concat(this.props.cardId)}
                             cardId={this.props.cardId}
                         />
                     </div>
-                    )
                     :
                     undefined
                 }
@@ -85,7 +84,6 @@ class ReplyHomeView extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        ['dataSet_'.concat(ownProps.cardId)]: state.reply['dataSet_'.concat(ownProps.cardId)],
         isAuthenticated: state.auth.isAuthenticated,
     };
 };

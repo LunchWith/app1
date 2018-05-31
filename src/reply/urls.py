@@ -9,7 +9,7 @@ urlpatterns = [
     url(_(r'^post/$'),
         reply.views.ReplyPostView.as_view(),
         name='replyPost'),
-    url(_(r'^list/(?P<card_id>\d+)/$'),
+    url(_(r'^list/(?P<card_id>\d+)/(?P<start_page>\d+)/$'),
         reply.views.ReplyListView.as_view(),
         name='replyList'),
 ]

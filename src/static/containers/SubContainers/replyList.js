@@ -10,18 +10,20 @@ import * as actionCreators from '../../actions/reply';
 class ReplyListView extends React.Component {
     static propTypes = {
         cardId: PropTypes.number.isRequired,
-        nextBidder: PropTypes.number,
         actions: PropTypes.shape({
             replyList: PropTypes.func.isRequired
         }).isRequired,
     }
 
-    static defaultProps = {
-        nextBidder: undefined,
-    }
-
     handleClick = () => {
-        this.props.actions.replyList(this.props.cardId);
+        const replyDataSet = 'replyDataSet_'.concat(this.props.cardId);
+        const startPage = 'startPage_'.concat(this.props.cardId);
+
+        this.props.actions.replyList(
+            this.props[replyDataSet],
+            this.props.cardId,
+            this.props[startPage] ? this.props[startPage] : 1,
+        );
     }
 
     render() {
@@ -31,7 +33,7 @@ class ReplyListView extends React.Component {
             });
         };
 
-        const replyBtn = () => {
+        const replyListDownBtn = () => {
             return (
                 <div className="text-center reply">
                     <a className="reply-btn" onClick={this.handleClick}>▼</a>
@@ -39,46 +41,30 @@ class ReplyListView extends React.Component {
             );
         };
 
-        const replyBtnInitial = () => {
-            return (
-                this.props['replyDataSet_'.concat(this.props.cardId)] === undefined &&
-                    this.props.nextBidder ?
-                    replyBtn()
-                    :
-                    undefined
-            );
-        };
-
+        const replyDataSet = 'replyDataSet_'.concat(this.props.cardId);
+        const nextBidder = 'nextBidder_'.concat(this.props.cardId);
         return (
             <div>
-                {this.props['replyDataSet_'.concat(this.props.cardId)] ?
-                    items(this.props['replyDataSet_'.concat(this.props.cardId)])
-                    :
-                    undefined
-                }
-                {this.props['nextBidder_'.concat(this.props.cardId)] ?
-                    replyBtn()
-                    :
-                    replyBtnInitial()
-                }
+                {this.props[replyDataSet] ? items(this.props[replyDataSet]) : undefined}
+                {this.props[nextBidder] ? replyListDownBtn() : undefined}
             </div>
-
-
         );
     }
 }
 
 
 const mapStateToProps = (state, ownProps) => {
-    let nextBidder = ownProps.nextBidder;
-    const nextBidderId = 'nextBidder_'.concat(ownProps.cardId);
+    const replyDataSet = 'replyDataSet_'.concat(ownProps.cardId);
+    const nextBidder = 'nextBidder_'.concat(ownProps.cardId);
+    const startPage = 'startPage_'.concat(ownProps.cardId);
 
-    if (state.reply[nextBidderId] !== undefined) {
-        nextBidder = state.reply[nextBidderId];
-    }
+    const initNextBidder = ownProps.nextBidder ? ownProps.nextBidder : false;
+
     return {
-        ['replyDataSet_'.concat(ownProps.cardId)]: state.reply['replyDataSet_'.concat(ownProps.cardId)],
-        [nextBidderId]: nextBidder,
+        nextBidder: undefined,
+        [replyDataSet]: state.reply[replyDataSet],
+        [nextBidder]: initNextBidder || state.reply[nextBidder],
+        [startPage]: state.reply[startPage],
     };
 };
 

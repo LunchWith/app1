@@ -6,7 +6,6 @@ import {
 
 
 const initialState = {
-    replyDataSet_null: [],
 };
 
 
@@ -18,14 +17,12 @@ export default function replyReducer(state = initialState, action) {
 
         case REPLY_LIST_SUCCESS:
         {
-            let cardId = null;
-            if (action.payload.dataSet.length !== 0) {
-                cardId = action.payload.dataSet[0].card_id;
-            }
+            const cardId = action.payload.dataSet[0].card_id;
             return Object.assign({}, state, {
                 // replyDataSet → dynamic json key by card
                 ['replyDataSet_'.concat(cardId)]: action.payload.dataSet,
                 ['nextBidder_'.concat(cardId)]: action.payload.nextBidder,
+                ['startPage_'.concat(cardId)]: action.payload.startPage,
             });
         }
 

@@ -29,15 +29,15 @@ class ReplyPostView(CreateModelMixin, GenericAPIView):
 
 
 class ReplyListView(GenericAPIView):
-    def get(self, request, card_id):
+    def get(self, request, card_id, start_page):
         totalCount = 10
         nextBidderCount = 1
-        startId = 1
-        endId = startId + totalCount + nextBidderCount
+        start_page = ((int(start_page)-1) * 10) + 1
+        end = start_page + totalCount + nextBidderCount
 
         querySet = Reply.objects.filter(card_id=card_id) \
             .values() \
-            .order_by('-bid_price')[startId:endId] # 최고 금액 순으로 수정 필요
+            .order_by('-bid_price')[start_page:end]
 
         nextBidder = False
         if len(querySet) == (totalCount + nextBidderCount):
@@ -55,9 +55,11 @@ class ReplyListView(GenericAPIView):
 
                 dataSet.append(query)
 
-        print(nextBidder)
+        print(dataSet)
+
         return JsonResponse({
             'dataSet': dataSet, 
-            'nextBidder': nextBidder
+            'nextBidder': nextBidder,
+            'startPage': start_page + 1,
             }, status=201
         )
