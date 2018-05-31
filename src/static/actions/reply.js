@@ -72,11 +72,12 @@ export function replyListRequest() {
 }
 
 
-export function replyListSuccess(dataSet) {
+export function replyListSuccess(dataSet, nextBidder) {
     return {
         type: REPLY_LIST_SUCCESS,
         payload: {
-            dataSet
+            dataSet,
+            nextBidder,
         }
     };
 }
@@ -102,7 +103,7 @@ export function replyList(cardId) {
             .then(checkHttpStatus)
             .then(parseJSON)
             .then((response) => {
-                dispatch(replyListSuccess(response.dataSet));
+                dispatch(replyListSuccess(response.dataSet, response.nextBidder));
             })
             .catch((error) => {
                 dispatch(replyListFailure());

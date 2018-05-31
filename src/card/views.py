@@ -89,7 +89,7 @@ class CardListView(GenericAPIView):
                         + topBidderUsername['last_name']
 
                     if len(topBidder) == 2:
-                        topBidder[0]['nextUser'] = 1
+                        topBidder[0]['nextBidder'] = 1
 
                     card['topBidder'] = topBidder[0]
 

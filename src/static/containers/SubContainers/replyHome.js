@@ -13,20 +13,17 @@ class ReplyHomeView extends React.Component {
     static propTypes = {
         cardId: PropTypes.number.isRequired,
         topBidder: PropTypes.shape({
-            username: PropTypes.string.isRequired,
-            bid_price: PropTypes.number.isRequired,
-            contents: PropTypes.string.isRequired,
-            create_at: PropTypes.string.isRequired,
-            nextUser: PropTypes.number,
-        }).isRequired,
-        actions: PropTypes.shape({
-            replyList: PropTypes.func.isRequired
-        }).isRequired,
+            username: PropTypes.string,
+            bid_price: PropTypes.number,
+            contents: PropTypes.string,
+            create_at: PropTypes.string,
+            nextBidder: PropTypes.number,
+        }),
         isAuthenticated: PropTypes.bool.isRequired,
     }
 
-    handleClick = () => {
-        this.props.actions.replyList(this.props.cardId);
+    static defaultProps = {
+        topBidder: null
     }
 
     render() {
@@ -67,19 +64,9 @@ class ReplyHomeView extends React.Component {
                     undefined
                 }
                 {/* validate topBidder before topBidder.nextUser */}
-                {this.props.topBidder && this.props.topBidder.nextUser ?
-                    <div className="text-center reply">
-                        {this.props['dataSet_'.concat(this.props.cardId)] ?
-                            <ReplyListView cardId={this.props.cardId}
-                                replySet={this.props['dataSet_'.concat(this.props.cardId)]}
-                            />
-                            : undefined
-                        }
-                        <a className="reply-btn" onClick={this.handleClick}>▼</a>
-                    </div>
-                    :
-                    undefined
-                }
+                <ReplyListView cardId={this.props.cardId}
+                    nextBidder={this.props.topBidder && this.props.topBidder.nextBidder ? 1 : 0}
+                />
                 {this.props.isAuthenticated ?
                     (<div className="reply">
                         <ReplyWriteView form={'replyWriteViewForm_'.concat(this.props.cardId)}
@@ -113,5 +100,5 @@ const mapDispatchToProps = (dispatch) => {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReplyHomeView);
-export { ReplyHomeView as ReplyNotConnected };
+export { ReplyHomeView as ReplyHomeViewNotConnected };
 
