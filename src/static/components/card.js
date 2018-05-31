@@ -4,7 +4,7 @@ import TimeAgo from 'react-timeago';
 
 import Video from './video';
 import Image from './image';
-import Reply from './reply';
+import ReplyHomeView from '../containers/SubContainers/replyHome';
 
 
 class Card extends React.Component {
@@ -47,7 +47,7 @@ class Card extends React.Component {
                         </div>
                     </div>
                     <div className="modal-footer">
-                        <Reply topBidder={this.props.card.topBidder}
+                        <ReplyHomeView topBidder={this.props.card.topBidder}
                             cardId={this.props.card.id}
                         />
                     </div>

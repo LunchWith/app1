@@ -71,13 +71,14 @@ class ReplyWriteView extends React.Component {
         return (
             <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
                 <div className="row">
-                    <div className="col-xs-4 text-left reply-sub">
+                    <div className="col-xs-5 text-left reply-sub">
+                        <i className="glyphicon glyphicon-user" />&nbsp;
                         <strong>
                             {this.props.userFirstName}
                             {this.props.userLastName}
                         </strong>
                     </div>
-                    <div className="col-xs-5 text-left">
+                    <div className="col-xs-4 text-left">
                         {_.map(FIELDS_BIDPRICE, this.renderField)}
                     </div>
                     <div className="col-xs-3 text-center">

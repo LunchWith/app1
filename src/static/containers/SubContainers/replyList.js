@@ -9,31 +9,21 @@ import * as actionCreators from '../../actions/reply';
 
 class ReplyListView extends React.Component {
     static propTypes = {
-        cardId: PropTypes.number.isRequired,
-        actions: PropTypes.shape({
-            replyList: PropTypes.func.isRequired
+        replySet: PropTypes.shape({
         }).isRequired,
     }
 
-    static defaultProps = {
-        dataSet: [],
-    }
-
-    componentWillMount() {
-        this.props.actions.replyList(this.props.cardId);
-    }
-
     render() {
-        const items = (dataSet) => {
-            return dataSet.map((reply, i) => {
+        const items = (replySet) => {
+            return replySet.map((reply, i) => {
                 return <Reply key={reply.id} reply={reply} />;
             });
         };
 
         return (
-            this.props['dataSet_'.concat(this.props.cardId)] !== undefined ?
-                (<div>{items(this.props['dataSet_'.concat(this.props.cardId)])}</div>)
-                : null
+            <div>
+                {items(this.props.replySet)}
+            </div>
         );
     }
 }
