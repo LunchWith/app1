@@ -6,4 +6,4 @@ from reply.models import Reply
 class ReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply
-        fields = ('card', 'user', 'contents', )
+        fields = ('card', 'user', 'bid_price', 'contents', )

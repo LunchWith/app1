@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as actionCreators from '../../actions/reply';
 import Reply from '../../components/reply';
+import * as actionCreators from '../../actions/reply';
 
 
 class ReplyListView extends React.Component {

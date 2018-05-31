@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+
 import { SERVER_URL } from '../utils/config';
 import { checkHttpStatus, parseJSON } from '../utils';
 import {

@@ -1,10 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import t from 'tcomb-form';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { push } from 'react-router-redux';
-import t from 'tcomb-form';
-import PropTypes from 'prop-types';
 
 import * as actionCreators from '../../actions/auth';
 

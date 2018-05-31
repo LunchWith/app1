@@ -14,6 +14,7 @@ from reply.serializers import ReplySerializer
 class ReplyPostView(CreateModelMixin, GenericAPIView):
     serializer_class = ReplySerializer
 
+    print('check1')
     def post(self, request):
         token = b64decode(request.META['HTTP_AUTHORIZATION']).decode('UTF-8')
         token_key = token[:8]
@@ -32,7 +33,7 @@ class ReplyListView(GenericAPIView):
     def get(self, request, card_id):
         querySet = Reply.objects.filter(card_id=card_id) \
             .values() \
-            .order_by('-id')[:1] # 최고 금액 순으로 수정 필요
+            .order_by('-bid_price')[1:11] # 최고 금액 순으로 수정 필요
 
         dataSet = []
         if querySet:

@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
-import * as actionCreators from '../../actions/card';
 import Card from '../../components/card';
+import * as actionCreators from '../../actions/card';
 
 
 class CardListView extends React.Component {

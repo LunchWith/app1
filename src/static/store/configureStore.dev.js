@@ -2,12 +2,12 @@
 
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
-
 import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 
 import rootReducer from '../reducers';
 import DevTools from '../containers/Root/DevTools';
+
 
 export default function configureStore(initialState, history) {
     const logger = createLogger();

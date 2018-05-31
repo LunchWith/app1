@@ -1,7 +1,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
-import { HomeView, LoginView, ProtectedView, NotFoundView } from './containers';
+
 import requireAuthentication from './utils/requireAuthentication';
+import { HomeView, LoginView, ProtectedView, NotFoundView } from './containers';
+
 
 export default(
     <Switch>

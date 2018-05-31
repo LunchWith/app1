@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import CardWriteView from '../SubContainers/cardWrite';
 import CardListView from '../SubContainers/cardList';

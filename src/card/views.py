@@ -75,21 +75,24 @@ class CardListView(GenericAPIView):
                     card['imagePath'] = imagePath['imagePath']
 
                 # bid information
-                superBidder = Reply.objects\
+                topBidder = Reply.objects\
                     .values('user_id', 'bid_price', 'contents', 'create_at',) \
                     .filter(card_id=card['id']) \
-                    .order_by('-bid_price')[:1]
+                    .order_by('-bid_price')[:2]
 
-                if superBidder:
-                    superBidderUsername = User.objects \
+                if topBidder:
+                    topBidderUsername = User.objects \
                         .values('first_name', 'last_name') \
-                        .get(id=superBidder[0]['user_id'])
-                    superBidder[0]['username'] \
-                        = superBidderUsername['first_name'] \
-                        + superBidderUsername['last_name']
+                        .get(id=topBidder[0]['user_id'])
+                    topBidder[0]['username'] \
+                        = topBidderUsername['first_name'] \
+                        + topBidderUsername['last_name']
 
-                    card['superBidder'] = superBidder[0]
-                
+                    if len(topBidder) == 2:
+                        topBidder[0]['nextUser'] = 1
+
+                    card['topBidder'] = topBidder[0]
+
                 # update dataSet
                 dataSet.append(card)
 

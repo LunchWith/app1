@@ -1,11 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 
 import { authLogoutAndRedirect } from './actions/auth';
+
 import './styles/main.scss';
+
 
 class App extends React.Component {
     static propTypes = {
