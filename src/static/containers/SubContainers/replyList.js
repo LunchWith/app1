@@ -58,12 +58,16 @@ const mapStateToProps = (state, ownProps) => {
     const nextBidder = 'nextBidder_'.concat(ownProps.cardId);
     const startPage = 'startPage_'.concat(ownProps.cardId);
 
-    const initNextBidder = ownProps.nextBidder ? ownProps.nextBidder : false;
+    let result;
+    if (state.reply[nextBidder] === undefined) {
+        result = ownProps.nextBidder;
+    } else if (state.reply[nextBidder] === true) {
+        result = state.reply[nextBidder];
+    }
 
     return {
-        nextBidder: undefined,
         [replyDataSet]: state.reply[replyDataSet],
-        [nextBidder]: initNextBidder || state.reply[nextBidder],
+        [nextBidder]: result,
         [startPage]: state.reply[startPage],
     };
 };
