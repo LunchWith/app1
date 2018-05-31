@@ -104,12 +104,11 @@ export function replyList(dataSet, cardId, startPage) {
             .then(checkHttpStatus)
             .then(parseJSON)
             .then((response) => {
-                let connectedDataSet = [];
-                if (dataSet === undefined) {
-                    connectedDataSet = response.dataSet;
-                } else {
-                    connectedDataSet = dataSet.concat(response.dataSet);
-                }
+                const connectedDataSet = dataSet === undefined ?
+                    response.dataSet
+                    :
+                    dataSet.concat(response.dataSet);
+
                 dispatch(replyListSuccess(
                     connectedDataSet,
                     response.nextBidder,
