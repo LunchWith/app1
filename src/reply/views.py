@@ -22,10 +22,9 @@ class ReplyPostView(CreateModelMixin, GenericAPIView):
         querySet = AuthToken.objects.values('user_id').get(token_key=token_key)
         if querySet:
             request.data['user'] = querySet['user_id']
-            print(request.data)
             self.create(request)
 
-            return Response(status=201)
+            return JsonResponse({}, status=201)
 
 
 class ReplyListView(GenericAPIView):
@@ -54,8 +53,6 @@ class ReplyListView(GenericAPIView):
                     + username['last_name']
 
                 dataSet.append(query)
-
-        print(dataSet)
 
         return JsonResponse({
             'dataSet': dataSet, 

@@ -52,6 +52,7 @@ class CardWriteView extends React.Component {
         }).isRequired,
         actions: PropTypes.shape({
             cardPost: PropTypes.func.isRequired,
+            cardList: PropTypes.func.isRequired,
         }).isRequired,
     }
 
@@ -61,9 +62,9 @@ class CardWriteView extends React.Component {
         const imageFile = values.imageFile ? values.imageFile[0] : null;
         const imageYN = imageFile ? 1 : 0;
 
-        this.props.actions.cardPost(contents, videoid, imageYN, imageFile).then(
-            // reset('CardPostViewForm')
-        );
+        this.props.actions.cardPost(contents, videoid, imageYN, imageFile).then(() => {
+            this.props.actions.cardList();
+        });
     }
 
     handleClickImage = () => {
@@ -98,40 +99,43 @@ class CardWriteView extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-body">
-                            {_.map(FIELDS, this.renderField)}
-                            <div className="input-group">
-                                <div className="input-group-addon">
-                                    <span className="glyphicon glyphicon-facetime-video" />
-                                </div>
-                                {_.map(FIELDS_VIDEO, this.renderField)}
-                            </div>
-                        </div>
-                        <div className="modal-footer">
-                            <div className="row">
-                                <div className="col-xs-5">
-                                    <div className="input-group">
-                                        <div className="input-group-addon">
-                                            <a onClick={this.handleClickImage}>
-                                                <i className="glyphicon glyphicon-picture" />
-                                            </a>
-                                        </div>
-                                        {_.map(FIELDS_IMAGE, this.renderField)}
+            <div>
+                <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                {_.map(FIELDS, this.renderField)}
+                                <div className="input-group">
+                                    <div className="input-group-addon">
+                                        <span className="glyphicon glyphicon-facetime-video" />
                                     </div>
+                                    {_.map(FIELDS_VIDEO, this.renderField)}
                                 </div>
-                                <div className="col-xs-7">
-                                    <button className="btn btn-primary"
-                                        type="submit"
-                                    >POST</button>
+                            </div>
+                            <div className="modal-footer">
+                                <div className="row">
+                                    <div className="col-xs-5">
+                                        <div className="input-group">
+                                            <div className="input-group-addon">
+                                                <a onClick={this.handleClickImage}>
+                                                    <i className="glyphicon glyphicon-picture" />
+                                                </a>
+                                            </div>
+                                            {_.map(FIELDS_IMAGE, this.renderField)}
+                                        </div>
+                                    </div>
+                                    <div className="col-xs-7">
+                                        <button className="btn btn-primary"
+                                            type="submit"
+                                        >POST</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
+
         );
     }
 }
@@ -149,6 +153,13 @@ function validate(values) {
 }
 
 
+const mapStateToProps = (state) => {
+    return {
+        dataSet: state.card.dataSet
+    };
+};
+
+
 const mapDispatchToProps = (dispatch) => {
     return {
         dispatch,
@@ -161,5 +172,5 @@ export default reduxForm({
     form: 'CardPostViewForm',
     fields: _.keys(FIELDS).concat(_.keys(FIELDS_VIDEO)).concat(_.keys(FIELDS_IMAGE)), // ['contents', 'videoid', ... ]
     validate,
-})(connect(null, mapDispatchToProps)(CardWriteView));
+})(connect(mapStateToProps, mapDispatchToProps)(CardWriteView));
 export { CardWriteView as CardWriteViewNotConnected };

@@ -10,6 +10,10 @@ import {
     CARD_LIST_REQUEST,
     CARD_LIST_SUCCESS,
     CARD_LIST_FAILURE,
+
+    CARD_CHANGE_REQUEST,
+    CARD_CHANGE_SUCCESS,
+    CARD_CHANGE_FAILURE,
 } from '../constants';
 
 
@@ -34,7 +38,7 @@ export function cardPostFailure() {
 }
 
 
-export function cardPost(contents, videoid, image_yn, imageFile) {
+export function cardPost(contents, videoid, imageYN, imageFile) {
     return (dispatch) => {
         // inform CARD POST API is starting
         dispatch(cardPostRequest());
@@ -51,7 +55,7 @@ export function cardPost(contents, videoid, image_yn, imageFile) {
                 body: JSON.stringify({
                     contents,
                     videoid,
-                    image_yn,
+                    image_yn: imageYN,
                 }),
             })
                 .then(checkHttpStatus)
@@ -66,8 +70,8 @@ export function cardPost(contents, videoid, image_yn, imageFile) {
 
         const formData = new FormData();
         formData.append('contents', contents);
-        formData.append('videoid', videoid);
-        formData.append('image_yn', image_yn);
+        formData.append('videoid', videoid || ''); // To be change 'undefined' → ''
+        formData.append('image_yn', imageYN);
         formData.append('imageFile', imageFile);
 
         const header = {

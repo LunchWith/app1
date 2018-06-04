@@ -11,6 +11,7 @@ import * as actionCreators from '../../actions/reply';
 
 class ReplyHomeView extends React.Component {
     static propTypes = {
+        index: PropTypes.number.isRequired,
         cardId: PropTypes.number.isRequired,
         topBidder: PropTypes.shape({
             username: PropTypes.string,
@@ -25,6 +26,7 @@ class ReplyHomeView extends React.Component {
     static defaultProps = {
         topBidder: null
     }
+
 
     render() {
         const showTopBidder = (topBidder) => {
@@ -71,6 +73,7 @@ class ReplyHomeView extends React.Component {
                     <div className="reply">
                         <ReplyWriteView form={'replyWriteViewForm_'.concat(this.props.cardId)}
                             cardId={this.props.cardId}
+                            index={this.props.index}
                         />
                     </div>
                     :
@@ -82,8 +85,9 @@ class ReplyHomeView extends React.Component {
 }
 
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
+        dataSet: state.card.dataSet,
         isAuthenticated: state.auth.isAuthenticated,
     };
 };

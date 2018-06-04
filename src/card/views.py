@@ -40,7 +40,9 @@ class CardPostView(CreateModelMixin, GenericAPIView):
                 if imageSerializer.is_valid():
                     imageSerializer.save()
 
-            return Response(status=201)
+                return JsonResponse({}, status=201)
+
+            return JsonResponse({}, status=201)
 
 
 class CardListView(GenericAPIView):

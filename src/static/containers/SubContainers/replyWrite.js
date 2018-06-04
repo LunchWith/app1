@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { reduxForm } from 'redux-form';
 
-
-import * as actionCreators from '../../actions/reply';
+import * as actionReplyCreators from '../../actions/reply';
+import * as actionCardCreators from '../../actions/card';
 
 
 const FIELDS_BIDPRICE = {
@@ -29,15 +29,19 @@ const FIELDS_REPLY = {
 
 class ReplyWriteView extends React.Component {
     static propTypes = {
+        index: PropTypes.number.isRequired,
         cardId: PropTypes.number.isRequired,
         handleSubmit: PropTypes.func.isRequired,
         fields: PropTypes.shape({
         }).isRequired,
-        actions: PropTypes.shape({
+        actionReplys: PropTypes.shape({
             replyPost: PropTypes.func.isRequired,
         }).isRequired,
-        userFirstName: PropTypes.string.isRequired,
-        userLastName: PropTypes.string.isRequired,
+        actionCards: PropTypes.shape({
+            cardChange: PropTypes.func.isRequired,
+        }).isRequired,
+        dataSet: PropTypes.func.isRequired,
+        username: PropTypes.string.isRequired,
     }
 
     onSubmit = (values) => {
@@ -45,7 +49,9 @@ class ReplyWriteView extends React.Component {
         const bidPrice = values.bidPrice;
         const contents = values.contents;
 
-        this.props.actions.replyPost(cardId, bidPrice, contents);
+        this.props.actionReplys.replyPost(cardId, bidPrice, contents).then(() => {
+            this.props.actionCards.cardList();
+        });
     }
 
     renderField = (fieldItems, field) => {
@@ -74,8 +80,7 @@ class ReplyWriteView extends React.Component {
                     <div className="col-xs-5 text-left reply-sub">
                         <i className="glyphicon glyphicon-user" />&nbsp;
                         <strong>
-                            {this.props.userFirstName}
-                            {this.props.userLastName}
+                            {this.props.username}
                         </strong>
                     </div>
                     <div className="col-xs-4 text-left">
@@ -110,8 +115,8 @@ function validate(values) {
 
 const mapStateToProps = (state) => {
     return {
-        userFirstName: state.auth.userFirstName,
-        userLastName: state.auth.userLastName,
+        username: state.auth.userFirstName + state.auth.userLastName,
+        dataSet: state.card.dataSet,
     };
 };
 
@@ -119,7 +124,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         dispatch,
-        actions: bindActionCreators(actionCreators, dispatch),
+        actionReplys: bindActionCreators(actionReplyCreators, dispatch),
+        actionCards: bindActionCreators(actionCardCreators, dispatch),
     };
 };
 

@@ -37,8 +37,8 @@ class CardListView extends React.Component {
 
     render() {
         const items = (dataSet) => {
-            return dataSet.map((card, i) => {
-                return <Card key={card.id} card={card} />;
+            return dataSet.map((card, index) => {
+                return <Card key={card.id} card={card} index={index} />;
             });
         };
 

@@ -19,6 +19,7 @@ class Card extends React.Component {
             topBidder: PropTypes.shape({
             }),
         }).isRequired,
+        index: PropTypes.number.isRequired,
     }
 
     render() {
@@ -49,6 +50,7 @@ class Card extends React.Component {
                     <div className="modal-footer">
                         <ReplyHomeView topBidder={this.props.card.topBidder}
                             cardId={this.props.card.id}
+                            index={this.props.index}
                         />
                     </div>
                 </div>
