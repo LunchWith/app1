@@ -38,7 +38,7 @@ class ReplyWriteView extends React.Component {
             replyPost: PropTypes.func.isRequired,
         }).isRequired,
         actionCards: PropTypes.shape({
-            cardChange: PropTypes.func.isRequired,
+            cardList: PropTypes.func.isRequired,
         }).isRequired,
         dataSet: PropTypes.func.isRequired,
         username: PropTypes.string.isRequired,
