@@ -99,3 +99,52 @@ class CardListView(GenericAPIView):
                 dataSet.append(card)
 
             return JsonResponse({'dataSet': dataSet}, status=201)
+
+
+class CardChangeView(GenericAPIView):
+    def get(self, request, id):
+        querySetCard = Card.objects \
+            .filter(id=id) \
+            .values()
+
+        dataSet = []
+        if querySetCard:
+            for card in querySetCard:
+                # card information
+                username = User.objects \
+                    .values('first_name', 'last_name') \
+                    .get(id=card['user_id'])
+                card['username'] \
+                    = username['first_name'] \
+                    + username['last_name']
+                
+                # image information
+                if card['image_yn'] == 1:
+                    imagePath = Image.objects \
+                        .values('imagePath') \
+                        .get(card_id=card['id'])
+                    card['imagePath'] = imagePath['imagePath']
+
+                # bid information
+                topBidder = Reply.objects\
+                    .values('user_id', 'bid_price', 'contents', 'create_at',) \
+                    .filter(card_id=card['id']) \
+                    .order_by('-bid_price')[:2]
+
+                if topBidder:
+                    topBidderUsername = User.objects \
+                        .values('first_name', 'last_name') \
+                        .get(id=topBidder[0]['user_id'])
+                    topBidder[0]['username'] \
+                        = topBidderUsername['first_name'] \
+                        + topBidderUsername['last_name']
+
+                    if len(topBidder) == 2:
+                        topBidder[0]['nextBidder'] = 1
+
+                    card['topBidder'] = topBidder[0]
+
+                # update dataSet
+                dataSet.append(card)
+
+            return JsonResponse({'dataSet': dataSet}, status=201)

@@ -29,6 +29,10 @@ const FIELDS_REPLY = {
 
 class ReplyWriteView extends React.Component {
     static propTypes = {
+        dataSet: PropTypes.arrayOf(
+            PropTypes.shape({
+            }).isRequired,
+        ).isRequired,
         index: PropTypes.number.isRequired,
         cardId: PropTypes.number.isRequired,
         handleSubmit: PropTypes.func.isRequired,
@@ -39,18 +43,20 @@ class ReplyWriteView extends React.Component {
         }).isRequired,
         actionCards: PropTypes.shape({
             cardList: PropTypes.func.isRequired,
+            cardChange: PropTypes.func.isRequired,
         }).isRequired,
-        dataSet: PropTypes.func.isRequired,
         username: PropTypes.string.isRequired,
     }
 
     onSubmit = (values) => {
+        const dataSet = this.props.dataSet;
+        const index = this.props.index;
         const cardId = this.props.cardId;
         const bidPrice = values.bidPrice;
         const contents = values.contents;
 
         this.props.actionReplys.replyPost(cardId, bidPrice, contents).then(() => {
-            this.props.actionCards.cardList();
+            this.props.actionCards.cardChange(dataSet, index);
         });
     }
 

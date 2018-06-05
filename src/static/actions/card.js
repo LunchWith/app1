@@ -146,10 +146,66 @@ export function cardList(dataSet) {
                     :
                     dataSet.concat(response.dataSet);
 
+                console.log(connectedDataSet);
+
                 dispatch(cardListSuccess(connectedDataSet));
             })
             .catch((error) => {
                 dispatch(cardListFailure());
+            });
+    };
+}
+
+
+export function cardChangeRequest() {
+    return {
+        type: CARD_CHANGE_REQUEST
+    };
+}
+
+
+export function cardChangeSuccess(dataSet) {
+    return {
+        type: CARD_CHANGE_SUCCESS,
+        payload: {
+            dataSet
+        }
+    };
+}
+
+
+export function cardChangeFailure() {
+    return {
+        type: CARD_CHANGE_FAILURE
+    };
+}
+
+
+export function cardChange(dataSet, index) {
+    return (dispatch) => {
+        // inform CARD CHANGE API is starting
+        dispatch(cardChangeRequest());
+
+        const id = dataSet[index].id;
+        return fetch(`${SERVER_URL}/api/v1/card/get/${id}/`, {
+            headers: {
+                Accept: 'application/json'
+            }
+        })
+            .then(checkHttpStatus)
+            .then(parseJSON)
+            .then((response) => {
+                const dataSetUpper = dataSet.slice(0, index);
+                const dataSetMiddle = response.dataSet[0];
+                const dataSetLower = dataSet.slice(index + 1, dataSet.length);
+
+                const connectedDataSet =
+                    dataSetUpper.concat(dataSetMiddle).concat(dataSetLower);
+
+                dispatch(cardChangeSuccess(connectedDataSet));
+            })
+            .catch((error) => {
+                dispatch(cardChangeFailure());
             });
     };
 }
