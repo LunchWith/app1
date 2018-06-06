@@ -19,9 +19,13 @@ class ReplyPostView(CreateModelMixin, GenericAPIView):
         token_key = token[:8]
 
         # if authentication is alive
-        querySet = AuthToken.objects.values('user_id').get(token_key=token_key)
-        if querySet:
-            request.data['user'] = querySet['user_id']
+        query_set = AuthToken \
+            .objects \
+            .values('user_id') \
+            .get(token_key=token_key)
+
+        if query_set:
+            request.data['user'] = query_set['user_id']
             self.create(request)
 
             return JsonResponse({}, status=201)
@@ -29,34 +33,33 @@ class ReplyPostView(CreateModelMixin, GenericAPIView):
 
 class ReplyListView(GenericAPIView):
     def get(self, request, card_id, start_page):
-        totalCount = 10
-        nextBidderCount = 1
+        total_count = 10
+        next_bidder_count = 1
         start_page = ((int(start_page)-1) * 10) + 1
-        end = start_page + totalCount + nextBidderCount
+        end = start_page + total_count + next_bidder_count
 
-        querySet = Reply.objects.filter(card_id=card_id) \
+        query_set = Reply.objects.filter(card_id=card_id) \
             .values() \
             .order_by('-bid_price')[start_page:end]
 
-        nextBidder = False
-        if len(querySet) == (totalCount + nextBidderCount):
-            nextBidder = True
-            querySet = querySet[0:totalCount]
+        next_bidder = False
+        if len(query_set) == (total_count + next_bidder_count):
+            next_bidder = True
+            query_set = query_set[0:total_count]
 
-        dataSet = []
-        if querySet:
-            for query in querySet:
+        data_set = []
+        if query_set:
+            for query in query_set:
                 username = User.objects.values('first_name', 'last_name') \
                     .get(id=query['user_id'])
                 query['username'] \
                     = username['first_name'] \
                     + username['last_name']
 
-                dataSet.append(query)
+                data_set.append(query)
 
         return JsonResponse({
-            'dataSet': dataSet, 
-            'nextBidder': nextBidder,
-            'startPage': start_page + 1,
-            }, status=201
-        )
+            'data_set': data_set,
+            'next_bidder': next_bidder,
+            'start_page': start_page + 1,
+        }, status=201)

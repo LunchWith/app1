@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import { camelizeKeys } from 'humps';
 
 import { SERVER_URL } from '../utils/config';
 import { checkHttpStatus, parseJSON } from '../utils';
@@ -104,15 +105,23 @@ export function replyList(dataSet, cardId, startPage) {
             .then(checkHttpStatus)
             .then(parseJSON)
             .then((response) => {
+                const responseDataSet = camelizeKeys(response.data_set);
+                const responseNextBidder = camelizeKeys(response.next_bidder);
+                const responseStartPage = camelizeKeys(response.start_page);
+
+                console.log(responseDataSet)
+                console.log(responseNextBidder)
+                console.log(responseStartPage)
+
                 const connectedDataSet = dataSet === undefined ?
-                    response.dataSet
+                    responseDataSet
                     :
-                    dataSet.concat(response.dataSet);
+                    dataSet.concat(responseDataSet);
 
                 dispatch(replyListSuccess(
                     connectedDataSet,
-                    response.nextBidder,
-                    response.startPage
+                    responseNextBidder,
+                    responseStartPage,
                 ));
             })
             .catch((error) => {

@@ -7,9 +7,9 @@ class Reply extends React.Component {
     static propTypes = {
         reply: PropTypes.shape({
             username: PropTypes.string.isRequired,
-            bid_price: PropTypes.number.isRequired,
             contents: PropTypes.string.isRequired,
-            create_at: PropTypes.string.isRequired,
+            bidPrice: PropTypes.number.isRequired,
+            createAt: PropTypes.string.isRequired,
         }).isRequired,
     }
 
@@ -25,10 +25,10 @@ class Reply extends React.Component {
                         <small>
                             <i className="glyphicon glyphicon-heart text-primary" />
                         </small>&nbsp;&nbsp;&nbsp;
-                        <span className="text-danger">$ {this.props.reply.bid_price}</span>
+                        <span className="text-danger">$ {this.props.reply.bidPrice}</span>
                     </div>
                     <div className="col-xs-3 text-center reply-sub">
-                        <TimeAgo date={this.props.reply.create_at} />
+                        <TimeAgo date={this.props.reply.createAt} />
                     </div>
                 </div>
                 <div className="text-left reply-sub">

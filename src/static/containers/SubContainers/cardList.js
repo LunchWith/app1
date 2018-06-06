@@ -15,7 +15,7 @@ class CardListView extends React.Component {
                 username: PropTypes.string.isRequired,
                 contents: PropTypes.string.isRequired,
                 imagePath: PropTypes.string,
-                videoid: PropTypes.string,
+                videoName: PropTypes.string,
             })
         ),
         actions: PropTypes.shape({

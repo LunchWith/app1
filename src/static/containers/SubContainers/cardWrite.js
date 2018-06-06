@@ -19,11 +19,29 @@ const FIELDS = {
 
 
 const FIELDS_VIDEO = {
-    videoid: {
+    videoName: {
         tag: 'input',
         type: 'text',
         className: 'form-control input-sm',
         placeholder: 'Youtube video-ID'
+    },
+};
+
+
+const FIELDS_DATE = {
+    deadlineDate: {
+        tag: 'input',
+        type: 'date',
+        className: 'form-control input-sm',
+    },
+};
+
+
+const FIELDS_TIME = {
+    deadlineTime: {
+        tag: 'input',
+        type: 'time',
+        className: 'form-control input-sm',
     },
 };
 
@@ -58,11 +76,22 @@ class CardWriteView extends React.Component {
 
     onSubmit = (values) => {
         const contents = values.contents;
-        const videoid = values.videoid;
+        const videoName = values.videoName;
+        const videoYn = !!values.videoName;
         const imageFile = values.imageFile ? values.imageFile[0] : null;
-        const imageYN = imageFile ? 1 : 0;
+        const imageYN = !!values.imageFile;
+        const deadlineDate = values.deadlineDate;
+        const deadlineTime = values.deadlineTime;
 
-        this.props.actions.cardPost(contents, videoid, imageYN, imageFile).then(() => {
+        this.props.actions.cardPost(
+            contents,
+            videoName,
+            videoYn,
+            imageFile,
+            imageYN,
+            deadlineDate,
+            deadlineTime,
+        ).then(() => {
             this.props.actions.cardList();
         });
     }
@@ -105,25 +134,45 @@ class CardWriteView extends React.Component {
                         <div className="modal-content">
                             <div className="modal-body">
                                 {_.map(FIELDS, this.renderField)}
-                                <div className="input-group">
-                                    <div className="input-group-addon">
-                                        <span className="glyphicon glyphicon-facetime-video" />
+                                <div className="row">
+                                    <div className="col-xs-7">
+                                        <p>▧ Video & Image</p>
+                                        <div className="form-group">
+                                            <div className="input-group">
+                                                <div className="input-group-addon">
+                                                    <span className="glyphicon glyphicon-facetime-video" />
+                                                </div>
+                                                {_.map(FIELDS_VIDEO, this.renderField)}
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <div className="input-group">
+                                                <div className="input-group-addon">
+                                                    <a onClick={this.handleClickImage}>
+                                                        <i className="glyphicon glyphicon-picture" />
+                                                    </a>
+                                                </div>
+                                                {_.map(FIELDS_IMAGE, this.renderField)}
+                                            </div>
+                                        </div>
                                     </div>
-                                    {_.map(FIELDS_VIDEO, this.renderField)}
+                                    <div className="col-xs-5">
+                                        <p> ▧ Action Deadline</p>
+                                        <div className="form-group self-calender">
+                                            <div className="input-group">
+                                                <div className="input-group-addon">
+                                                    <span className="glyphicon glyphicon-calendar" />
+                                                </div>
+                                                {_.map(FIELDS_DATE, this.renderField)}
+                                                {_.map(FIELDS_TIME, this.renderField)}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div className="modal-footer">
                                 <div className="row">
-                                    <div className="col-xs-5">
-                                        <div className="input-group">
-                                            <div className="input-group-addon">
-                                                <a onClick={this.handleClickImage}>
-                                                    <i className="glyphicon glyphicon-picture" />
-                                                </a>
-                                            </div>
-                                            {_.map(FIELDS_IMAGE, this.renderField)}
-                                        </div>
-                                    </div>
+                                    <div className="col-xs-5" />
                                     <div className="col-xs-7">
                                         <button className="btn btn-primary"
                                             type="submit"
@@ -170,7 +219,11 @@ const mapDispatchToProps = (dispatch) => {
 
 export default reduxForm({
     form: 'CardPostViewForm',
-    fields: _.keys(FIELDS).concat(_.keys(FIELDS_VIDEO)).concat(_.keys(FIELDS_IMAGE)), // ['contents', 'videoid', ... ]
+    fields: _.keys(FIELDS)
+        .concat(_.keys(FIELDS_VIDEO))
+        .concat(_.keys(FIELDS_DATE))
+        .concat(_.keys(FIELDS_TIME))
+        .concat(_.keys(FIELDS_IMAGE)), // ['contents', 'videoid', ... ]
     validate,
 })(connect(mapStateToProps, mapDispatchToProps)(CardWriteView));
 export { CardWriteView as CardWriteViewNotConnected };

@@ -15,9 +15,9 @@ class ReplyHomeView extends React.Component {
         cardId: PropTypes.number.isRequired,
         topBidder: PropTypes.shape({
             username: PropTypes.string,
-            bid_price: PropTypes.number,
             contents: PropTypes.string,
-            create_at: PropTypes.string,
+            bidPrice: PropTypes.number,
+            createAt: PropTypes.string,
             nextBidder: PropTypes.number,
         }),
         isAuthenticated: PropTypes.bool.isRequired,
@@ -42,11 +42,11 @@ class ReplyHomeView extends React.Component {
                                 <small>
                                     <i className="glyphicon glyphicon-heart text-primary" />
                                 </small>&nbsp;
-                                $ {topBidder.bid_price}
+                                $ {topBidder.bidPrice}
                             </h4>
                         </div>
                         <div className="col-xs-3 text-center">
-                            <TimeAgo date={topBidder.create_at} />
+                            <TimeAgo date={topBidder.createAt} />
                         </div>
                     </div>
                     <div className="text-left">

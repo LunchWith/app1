@@ -13,9 +13,9 @@ class Card extends React.Component {
             id: PropTypes.number.isRequired,
             username: PropTypes.string.isRequired,
             contents: PropTypes.string.isRequired,
+            videoName: PropTypes.string,
             imagePath: PropTypes.string,
-            videoid: PropTypes.string,
-            create_at: PropTypes.string.isRequired,
+            createAt: PropTypes.string.isRequired,
             topBidder: PropTypes.shape({
             }),
         }).isRequired,
@@ -34,7 +34,7 @@ class Card extends React.Component {
                             </div>
                             <div className="col-xs-6 text-right">
                                 <small>
-                                    <TimeAgo date={this.props.card.create_at} />
+                                    <TimeAgo date={this.props.card.createAt} />
                                 </small>&nbsp;&nbsp;
                                 <i className="glyphicon glyphicon-time" />
                             </div>
@@ -42,7 +42,7 @@ class Card extends React.Component {
                     </div>
                     <div className="modal-body">
                         {this.props.card.imagePath ? <Image imagePath={this.props.card.imagePath} /> : undefined}
-                        {this.props.card.videoid ? <Video videoid={this.props.card.videoid} /> : undefined}
+                        {this.props.card.videoName ? <Video videoName={this.props.card.videoName} /> : undefined}
                         <div className="self-card-contents">
                             {this.props.card.contents}
                         </div>

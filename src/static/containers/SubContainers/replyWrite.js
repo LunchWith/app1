@@ -55,7 +55,11 @@ class ReplyWriteView extends React.Component {
         const bidPrice = values.bidPrice;
         const contents = values.contents;
 
-        this.props.actionReplys.replyPost(cardId, bidPrice, contents).then(() => {
+        this.props.actionReplys.replyPost(
+            cardId,
+            bidPrice,
+            contents
+        ).then(() => {
             this.props.actionCards.cardChange(dataSet, index);
         });
     }

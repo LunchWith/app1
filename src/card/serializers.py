@@ -1,16 +1,21 @@
 from rest_framework import serializers
 
-from card.models import Card
-from card.models import Image
+from card.models import Card, Video, Image
 
 
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
-        fields = ('user', 'contents', 'videoid', 'image_yn')
+        fields = ('user', 'contents', 'video_yn', 'image_yn', 'deadline')
+
+
+class VideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = ('card', 'video_name',)
 
 
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ('card', 'imageName', 'imagePath',)
+        fields = ('card', 'image_name', 'image_path',)

@@ -5,7 +5,7 @@ import YouTube from 'react-youtube';
 
 class Video extends React.Component {
     static propTypes = {
-        videoid: PropTypes.string.isRequired,
+        videoName: PropTypes.string.isRequired,
     }
 
     onReady = (e) => {
@@ -22,7 +22,7 @@ class Video extends React.Component {
         };
 
         const video = (
-            <YouTube videoId={this.props.videoid}
+            <YouTube videoId={this.props.videoName}
                 opts={opts}
                 onReady={this.onReady}
             />
@@ -30,7 +30,7 @@ class Video extends React.Component {
 
         return (
             <div className="self-card-body">
-                {this.props.videoid !== '' ? video : ''}
+                {this.props.videoName !== '' ? video : ''}
             </div>
         );
     }

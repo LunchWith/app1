@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import { camelizeKeys } from 'humps';
 
 import { SERVER_URL } from '../utils/config';
 import { checkHttpStatus, parseJSON } from '../utils';
@@ -38,7 +39,15 @@ export function cardPostFailure() {
 }
 
 
-export function cardPost(contents, videoid, imageYN, imageFile) {
+export function cardPost(
+    contents,
+    videoName,
+    videoYn,
+    imageFile,
+    imageYn,
+    deadlineDate,
+    deadlineTime,
+) {
     return (dispatch) => {
         // inform CARD POST API is starting
         dispatch(cardPostRequest());
@@ -54,8 +63,11 @@ export function cardPost(contents, videoid, imageYN, imageFile) {
                 },
                 body: JSON.stringify({
                     contents,
-                    videoid,
-                    image_yn: imageYN,
+                    video_name: videoName,
+                    video_yn: videoYn,
+                    image_yn: imageYn,
+                    deadline_date: deadlineDate,
+                    deadline_time: deadlineTime,
                 }),
             })
                 .then(checkHttpStatus)
@@ -70,9 +82,12 @@ export function cardPost(contents, videoid, imageYN, imageFile) {
 
         const formData = new FormData();
         formData.append('contents', contents);
-        formData.append('videoid', videoid || ''); // To be change 'undefined' → ''
-        formData.append('image_yn', imageYN);
-        formData.append('imageFile', imageFile);
+        formData.append('video_name', videoName); // To be change 'undefined' → ''
+        formData.append('video_yn', videoYn);
+        formData.append('image_file', imageFile);
+        formData.append('image_yn', imageYn);
+        formData.append('deadline_date', deadlineDate);
+        formData.append('deadline_time', deadlineTime);
 
         const header = {
             'Accept': 'application/json',
@@ -141,12 +156,12 @@ export function cardList(dataSet) {
             .then(checkHttpStatus)
             .then(parseJSON)
             .then((response) => {
-                const connectedDataSet = dataSet === undefined ?
-                    response.dataSet
-                    :
-                    dataSet.concat(response.dataSet);
+                const responseDataSet = camelizeKeys(response.data_set);
 
-                console.log(connectedDataSet);
+                const connectedDataSet = dataSet === undefined ?
+                    responseDataSet
+                    :
+                    dataSet.concat(responseDataSet);
 
                 dispatch(cardListSuccess(connectedDataSet));
             })
@@ -195,8 +210,10 @@ export function cardChange(dataSet, index) {
             .then(checkHttpStatus)
             .then(parseJSON)
             .then((response) => {
+                const responseDataSet = camelizeKeys(response.data_set[0]);
+
                 const dataSetUpper = dataSet.slice(0, index);
-                const dataSetMiddle = response.dataSet[0];
+                const dataSetMiddle = responseDataSet;
                 const dataSetLower = dataSet.slice(index + 1, dataSet.length);
 
                 const connectedDataSet =

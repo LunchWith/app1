@@ -17,7 +17,7 @@ export default function replyReducer(state = initialState, action) {
 
         case REPLY_LIST_SUCCESS:
         {
-            const cardId = action.payload.dataSet[0].card_id;
+            const cardId = action.payload.dataSet[0].cardId;
             return Object.assign({}, state, {
                 // replyDataSet → dynamic json key by card
                 ['replyDataSet_'.concat(cardId)]: action.payload.dataSet,
