@@ -48,9 +48,11 @@ class Card extends React.Component {
                 showDeadLine = `${diffTime.months()} MONTH`;
             } else if (diffTime.days() >= 1) {
                 showDeadLine = `${diffTime.days()} DAY`;
+            } else if (diffTime.hours() >= 1) {
+                showDeadLine = `${diffTime.hours()} HOUR`;
             } else if (diffTime.minutes() >= 0 && diffTime.seconds() >= 0) {
                 showDeadLine = `${showTime(diffTime.minutes())} : ${showTime(diffTime.seconds())}`;
-            } else if (diffTime.minutes() < 0 && diffTime.seconds() < 0) {
+            } else if (diffTime.minutes() < 0 || diffTime.seconds() < 0) {
                 showDeadLine = 'CLOSED';
             } else {
                 showDeadLine = '';
