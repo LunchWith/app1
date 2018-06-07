@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TimeAgo from 'react-timeago';
 
+import addComma from '../utils/addComma';
+
 
 class Reply extends React.Component {
     static propTypes = {
@@ -25,7 +27,7 @@ class Reply extends React.Component {
                         <small>
                             <i className="glyphicon glyphicon-heart text-primary" />
                         </small>&nbsp;&nbsp;&nbsp;
-                        <span className="text-danger">$ {this.props.reply.bidPrice}</span>
+                        <span className="text-danger">$ {addComma(this.props.reply.bidPrice)}</span>
                     </div>
                     <div className="col-xs-3 text-center reply-sub">
                         <TimeAgo date={this.props.reply.createAt} />

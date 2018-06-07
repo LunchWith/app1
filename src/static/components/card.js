@@ -7,6 +7,8 @@ import Video from './video';
 import Image from './image';
 import ReplyHomeView from '../containers/SubContainers/replyHome';
 
+import showTime from '../utils/showTime';
+
 
 class Card extends React.Component {
     static propTypes = {
@@ -28,8 +30,7 @@ class Card extends React.Component {
         super();
 
         this.state = {
-            diffMinutes: undefined,
-            diffSeconds: undefined,
+            showDeadLine: ''
         };
     }
 
@@ -38,14 +39,25 @@ class Card extends React.Component {
         setInterval(() => {
             const now = moment().utc();
             const deadline = moment(this.props.card.deadline).utc();
-
             const diffTime = moment.duration(deadline.diff(now));
-            const diffMinutes = diffTime.minutes();
-            const diffSeconds = diffTime.seconds();
+
+            let showDeadLine = '';
+            if (diffTime.years() >= 1) {
+                showDeadLine = `${diffTime.years()} YEAR`;
+            } else if (diffTime.months() >= 1) {
+                showDeadLine = `${diffTime.months()} MONTH`;
+            } else if (diffTime.days() >= 1) {
+                showDeadLine = `${diffTime.days()} DAY`;
+            } else if (diffTime.minutes() >= 0 && diffTime.seconds() >= 0) {
+                showDeadLine = `${showTime(diffTime.minutes())} : ${showTime(diffTime.seconds())}`;
+            } else if (diffTime.minutes() < 0 && diffTime.seconds() < 0) {
+                showDeadLine = 'CLOSED';
+            } else {
+                showDeadLine = '';
+            }
 
             this.setState({
-                diffMinutes,
-                diffSeconds,
+                showDeadLine,
             });
         }, 1000);
     }
@@ -64,19 +76,15 @@ class Card extends React.Component {
                                 <small>
                                     <TimeAgo date={this.props.card.createAt} />
                                 </small>&nbsp;&nbsp;
-                                <i className="glyphicon glyphicon-time" />
+                                <i className="glyphicon glyphicon-time self-timer" />
                             </div>
                         </div>
                     </div>
                     <div className="modal-body">
                         <div className="self-card-deadline">
-                            <h3 className="text-danger text-right">
-                                {this.state.diffMinutes >= 0 && this.state.diffSeconds >= 0 ?
-                                    `${this.state.diffMinutes} : ${this.state.diffSeconds}`
-                                    :
-                                    undefined
-                                }
-                            </h3>
+                            <h4 className="text-danger text-right">
+                                {this.state.showDeadLine}
+                            </h4>
                         </div>
                         {this.props.card.imagePath ?
                             <Image imagePath={this.props.card.imagePath} />

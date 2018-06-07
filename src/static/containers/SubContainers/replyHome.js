@@ -8,6 +8,8 @@ import ReplyListView from './replyList';
 import ReplyWriteView from './replyWrite';
 import * as actionCreators from '../../actions/reply';
 
+import addComma from '../../utils/addComma';
+
 
 class ReplyHomeView extends React.Component {
     static propTypes = {
@@ -42,7 +44,7 @@ class ReplyHomeView extends React.Component {
                                 <small>
                                     <i className="glyphicon glyphicon-heart text-primary" />
                                 </small>&nbsp;
-                                $ {topBidder.bidPrice}
+                                $ {addComma(topBidder.bidPrice)}
                             </h4>
                         </div>
                         <div className="col-xs-3 text-center">
