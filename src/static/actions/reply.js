@@ -109,10 +109,6 @@ export function replyList(dataSet, cardId, startPage) {
                 const responseNextBidder = camelizeKeys(response.next_bidder);
                 const responseStartPage = camelizeKeys(response.start_page);
 
-                console.log(responseDataSet)
-                console.log(responseNextBidder)
-                console.log(responseStartPage)
-
                 const connectedDataSet = dataSet === undefined ?
                     responseDataSet
                     :

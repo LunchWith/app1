@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TimeAgo from 'react-timeago';
+import moment from 'moment';
 
 import Video from './video';
 import Image from './image';
@@ -15,11 +16,38 @@ class Card extends React.Component {
             contents: PropTypes.string.isRequired,
             videoName: PropTypes.string,
             imagePath: PropTypes.string,
+            deadline: PropTypes.string.isRequired,
             createAt: PropTypes.string.isRequired,
             topBidder: PropTypes.shape({
             }),
         }).isRequired,
         index: PropTypes.number.isRequired,
+    }
+
+    constructor() {
+        super();
+
+        this.state = {
+            diffMinutes: undefined,
+            diffSeconds: undefined,
+        };
+    }
+
+    componentDidMount() {
+        // show deadline every second
+        setInterval(() => {
+            const now = moment().utc();
+            const deadline = moment(this.props.card.deadline).utc();
+
+            const diffTime = moment.duration(deadline.diff(now));
+            const diffMinutes = diffTime.minutes();
+            const diffSeconds = diffTime.seconds();
+
+            this.setState({
+                diffMinutes,
+                diffSeconds,
+            });
+        }, 1000);
     }
 
     render() {
@@ -41,8 +69,25 @@ class Card extends React.Component {
                         </div>
                     </div>
                     <div className="modal-body">
-                        {this.props.card.imagePath ? <Image imagePath={this.props.card.imagePath} /> : undefined}
-                        {this.props.card.videoName ? <Video videoName={this.props.card.videoName} /> : undefined}
+                        <div className="self-card-deadline">
+                            <h3 className="text-danger text-right">
+                                {this.state.diffMinutes >= 0 && this.state.diffSeconds >= 0 ?
+                                    `${this.state.diffMinutes} : ${this.state.diffSeconds}`
+                                    :
+                                    undefined
+                                }
+                            </h3>
+                        </div>
+                        {this.props.card.imagePath ?
+                            <Image imagePath={this.props.card.imagePath} />
+                            :
+                            undefined
+                        }
+                        {this.props.card.videoName ?
+                            <Video videoName={this.props.card.videoName} />
+                            :
+                            undefined
+                        }
                         <div className="self-card-contents">
                             {this.props.card.contents}
                         </div>
