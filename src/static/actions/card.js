@@ -47,6 +47,9 @@ export function cardPost(
     imageYn,
     deadlineDate,
     deadlineTime,
+    location,
+    lat,
+    lng
 ) {
     return (dispatch) => {
         // inform CARD POST API is starting
@@ -68,6 +71,9 @@ export function cardPost(
                     image_yn: imageYn,
                     deadline_date: deadlineDate,
                     deadline_time: deadlineTime,
+                    location,
+                    lat,
+                    lng
                 }),
             })
                 .then(checkHttpStatus)
@@ -88,6 +94,9 @@ export function cardPost(
         formData.append('image_yn', imageYn);
         formData.append('deadline_date', deadlineDate);
         formData.append('deadline_time', deadlineTime);
+        formData.append('location', location);
+        formData.append('lat', lat);
+        formData.append('lng', lng);
 
         const header = {
             'Accept': 'application/json',

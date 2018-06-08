@@ -11,6 +11,9 @@ class Card(models.Model):
     video_yn = models.BooleanField(default=False)
     image_yn = models.BooleanField(default=False)
     deadline = models.DateTimeField()
+    location = models.TextField(default='')
+    lat = models.FloatField(default=0)
+    lng = models.FloatField(default=0)
     create_at = models.DateTimeField(auto_now_add=True)
 
 

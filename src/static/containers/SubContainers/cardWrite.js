@@ -6,6 +6,8 @@ import { reduxForm } from 'redux-form';
 import _ from 'lodash';
 
 import * as actionCreators from '../../actions/card';
+import GoogleMapSearchBox from '../../components/googleMapSearchBox';
+// import GoogleMaps from '../../components/googleMaps';
 
 
 const FIELDS = {
@@ -74,6 +76,14 @@ class CardWriteView extends React.Component {
         }).isRequired,
     }
 
+    constructor() {
+        super();
+
+        this.state = {
+            mapToggle: false
+        };
+    }
+
     onSubmit = (values) => {
         const contents = values.contents;
         const videoName = values.videoName;
@@ -83,6 +93,10 @@ class CardWriteView extends React.Component {
         const deadlineDate = values.deadlineDate;
         const deadlineTime = values.deadlineTime;
 
+        const location = document.getElementsByClassName('searchBox')[0].value;
+        const lat = document.getElementsByClassName('lat')[0].value;
+        const lng = document.getElementsByClassName('lng')[0].value;
+
         this.props.actions.cardPost(
             contents,
             videoName,
@@ -91,6 +105,9 @@ class CardWriteView extends React.Component {
             imageYN,
             deadlineDate,
             deadlineTime,
+            location,
+            lat,
+            lng
         ).then(() => {
             this.props.actions.cardList();
         });
@@ -98,6 +115,12 @@ class CardWriteView extends React.Component {
 
     handleClickImage = () => {
         document.getElementsByClassName('hide')[0].click();
+    }
+
+    handleClickMap = () => {
+        this.setState({
+            mapToggle: !this.state.mapToggle
+        });
     }
 
     renderField = (fieldItems, field) => {
@@ -128,63 +151,75 @@ class CardWriteView extends React.Component {
 
     render() {
         return (
-            <div>
-                <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-body">
-                                {_.map(FIELDS, this.renderField)}
-                                <div className="row">
-                                    <div className="col-xs-7">
-                                        <p>▧ Video & Image</p>
-                                        <div className="form-group">
-                                            <div className="input-group">
-                                                <div className="input-group-addon">
-                                                    <span className="glyphicon glyphicon-facetime-video" />
-                                                </div>
-                                                {_.map(FIELDS_VIDEO, this.renderField)}
+            <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-body">
+                            {_.map(FIELDS, this.renderField)}
+                            <div className="row">
+                                <div className="col-xs-7">
+                                    <p>▧ Video & Image</p>
+                                    <div className="form-group">
+                                        <div className="input-group">
+                                            <div className="input-group-addon">
+                                                <span className="glyphicon glyphicon-facetime-video" />
                                             </div>
-                                        </div>
-                                        <div className="form-group">
-                                            <div className="input-group">
-                                                <div className="input-group-addon">
-                                                    <a onClick={this.handleClickImage}>
-                                                        <i className="glyphicon glyphicon-picture" />
-                                                    </a>
-                                                </div>
-                                                {_.map(FIELDS_IMAGE, this.renderField)}
-                                            </div>
+                                            {_.map(FIELDS_VIDEO, this.renderField)}
                                         </div>
                                     </div>
-                                    <div className="col-xs-5">
-                                        <p> ▧ Action Deadline</p>
-                                        <div className="form-group self-calender">
-                                            <div className="input-group">
-                                                <div className="input-group-addon">
-                                                    <span className="glyphicon glyphicon-calendar" />
-                                                </div>
-                                                {_.map(FIELDS_DATE, this.renderField)}
-                                                {_.map(FIELDS_TIME, this.renderField)}
+                                    <div className="form-group">
+                                        <div className="input-group">
+                                            <div className="input-group-addon">
+                                                <a onClick={this.handleClickImage}>
+                                                    <i className="glyphicon glyphicon-picture" />
+                                                </a>
                                             </div>
+                                            {_.map(FIELDS_IMAGE, this.renderField)}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="modal-footer">
-                                <div className="row">
-                                    <div className="col-xs-5" />
-                                    <div className="col-xs-7">
-                                        <button className="btn btn-primary"
-                                            type="submit"
-                                        >POST</button>
+                                <div className="col-xs-5">
+                                    <p> ▧ Action Deadline</p>
+                                    <div className="form-group self-calender">
+                                        <div className="input-group">
+                                            <div className="input-group-addon">
+                                                <span className="glyphicon glyphicon-calendar" />
+                                            </div>
+                                            {_.map(FIELDS_DATE, this.renderField)}
+                                            {_.map(FIELDS_TIME, this.renderField)}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div className="modal-footer">
+                            {this.state.mapToggle ?
+                                <div className="self-card-map">
+                                    <GoogleMapSearchBox />
+                                </div>
+                                :
+                                undefined
+                            }
+                            <div className="row">
+                                <div className="col-xs-5 text-left">
+                                    <a onClick={this.handleClickMap} className="self-mapToggle">
+                                        {this.state.mapToggle ?
+                                            <i className="glyphicon glyphicon-collapse-up" />
+                                            :
+                                            <i className="glyphicon glyphicon-collapse-down" />
+                                        }
+                                    </a>
+                                </div>
+                                <div className="col-xs-7">
+                                    <button className="btn btn-primary"
+                                        type="submit"
+                                    >POST</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </form>
-            </div>
-
+                </div>
+            </form>
         );
     }
 }

@@ -6,7 +6,16 @@ from card.models import Card, Video, Image
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
-        fields = ('user', 'contents', 'video_yn', 'image_yn', 'deadline')
+        fields = (
+            'user',
+            'contents',
+            'video_yn',
+            'image_yn',
+            'deadline',
+            'location',
+            'lat',
+            'lng',
+        )
 
 
 class VideoSerializer(serializers.ModelSerializer):
