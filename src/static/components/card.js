@@ -6,6 +6,7 @@ import moment from 'moment';
 import Video from './video';
 import Image from './image';
 import ReplyHomeView from '../containers/SubContainers/replyHome';
+import GoogleMapSearchBox from './googleMapSearchBox';
 
 import showTime from '../utils/showTime';
 
@@ -20,6 +21,9 @@ class Card extends React.Component {
             imagePath: PropTypes.string,
             deadline: PropTypes.string.isRequired,
             createAt: PropTypes.string.isRequired,
+            location: PropTypes.string.isRequired,
+            lat: PropTypes.number.isRequired,
+            lng: PropTypes.number.isRequired,
             topBidder: PropTypes.shape({
             }),
         }).isRequired,
@@ -64,6 +68,12 @@ class Card extends React.Component {
         }, 1000);
     }
 
+    handleClickMap = () => {
+        this.setState({
+            mapToggle: !this.state.mapToggle
+        });
+    }
+
     render() {
         return (
             <div className="modal-dialog">
@@ -100,6 +110,27 @@ class Card extends React.Component {
                         }
                         <div className="self-card-contents">
                             {this.props.card.contents}
+                        </div>
+                        {this.state.mapToggle && this.props.card.location !== '' ?
+                            <div className="self-card-map">
+                                <GoogleMapSearchBox disabled="disabled"
+                                    location={this.props.card.location}
+                                    lat={this.props.card.lat}
+                                    lng={this.props.card.lng}
+                                />
+                                <p className="text-right">{this.props.card.location}</p>
+                            </div>
+                            :
+                            undefined
+                        }
+                        <div className="text-right">
+                            <a onClick={this.handleClickMap} className="self-mapToggle">
+                                {this.state.mapToggle ?
+                                    <i className="glyphicon glyphicon-collapse-up" />
+                                    :
+                                    <i className="glyphicon glyphicon-collapse-down" />
+                                }
+                            </a>
                         </div>
                     </div>
                     <div className="modal-footer">

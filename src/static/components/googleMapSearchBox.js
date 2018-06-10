@@ -20,13 +20,18 @@ const GoogleMapSearchBox = compose(
     lifecycle({
         componentWillMount() {
             const refs = {};
+            const lat = this.props.lat ? this.props.lat : 41.9;
+            const lng = this.props.lng ? this.props.lng : -87.624;
 
             this.setState({
                 bounds: null,
                 center: {
-                    lat: 41.9, lng: -87.624
+                    lat,
+                    lng,
                 },
-                markers: [],
+                markers: [{
+                    position: { lat, lng },
+                }],
                 onMapMounted: (ref) => {
                     refs.map = ref;
                 },
@@ -88,7 +93,8 @@ const GoogleMapSearchBox = compose(
                 >
                     <input type="text"
                         className="searchBox"
-                        placeholder="Customized your placeholder"
+                        placeholder={props.location ? props.location : 'Enter your location'}
+                        disabled={props.disabled ? props.disabled : undefined}
                         style={{
                             boxSizing: 'border-box',
                             border: '1px solid transparent',
