@@ -45,6 +45,8 @@ export function cardPost(
     videoYn,
     imageFile,
     imageYn,
+    meetDate,
+    meetTime,
     deadlineDate,
     deadlineTime,
     location,
@@ -69,6 +71,8 @@ export function cardPost(
                     video_name: videoName,
                     video_yn: videoYn,
                     image_yn: imageYn,
+                    meet_date: meetDate,
+                    mett_time: meetTime,
                     deadline_date: deadlineDate,
                     deadline_time: deadlineTime,
                     location,
@@ -92,6 +96,8 @@ export function cardPost(
         formData.append('video_yn', videoYn);
         formData.append('image_file', imageFile);
         formData.append('image_yn', imageYn);
+        formData.append('meet_date', meetDate);
+        formData.append('meet_time', meetTime);
         formData.append('deadline_date', deadlineDate);
         formData.append('deadline_time', deadlineTime);
         formData.append('location', location);

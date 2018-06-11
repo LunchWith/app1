@@ -19,7 +19,8 @@ class Card extends React.Component {
             contents: PropTypes.string.isRequired,
             videoName: PropTypes.string,
             imagePath: PropTypes.string,
-            deadline: PropTypes.string.isRequired,
+            meetAt: PropTypes.string.isRequired,
+            deadlineAt: PropTypes.string.isRequired,
             createAt: PropTypes.string.isRequired,
             location: PropTypes.string.isRequired,
             lat: PropTypes.number.isRequired,
@@ -42,8 +43,8 @@ class Card extends React.Component {
         // show deadline every second
         setInterval(() => {
             const now = moment().utc();
-            const deadline = moment(this.props.card.deadline).utc();
-            const diffTime = moment.duration(deadline.diff(now));
+            const deadlineAt = moment(this.props.card.deadlineAt).utc();
+            const diffTime = moment.duration(deadlineAt.diff(now));
 
             let showDeadLine = '';
             if (diffTime.years() >= 1) {
@@ -124,6 +125,7 @@ class Card extends React.Component {
                             undefined
                         }
                         <div className="text-right">
+                            Meet: {moment(this.props.card.meetAt).format('MM/DD/YYYY HH:MM')}&nbsp;&nbsp;
                             <a onClick={this.handleClickMap} className="self-mapToggle">
                                 {this.state.mapToggle ?
                                     <i className="glyphicon glyphicon-collapse-up" />

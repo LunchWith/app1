@@ -7,10 +7,27 @@ import _ from 'lodash';
 
 import * as actionCreators from '../../actions/card';
 import GoogleMapSearchBox from '../../components/googleMapSearchBox';
-// import GoogleMaps from '../../components/googleMaps';
 
 
-const FIELDS = {
+const FIELDS_DEADLINE_DATE = {
+    deadlineDate: {
+        tag: 'input',
+        type: 'date',
+        className: 'form-control input-md self-cardwrite-deadline text-center',
+    },
+};
+
+
+const FIELDS_DEADLINE_TIME = {
+    deadlineTime: {
+        tag: 'input',
+        type: 'time',
+        className: 'form-control input-md self-cardwrite-deadline text-center',
+    },
+};
+
+
+const FIELDS_CONTENTS = {
     contents: {
         tag: 'textarea',
         className: 'form-control',
@@ -30,8 +47,8 @@ const FIELDS_VIDEO = {
 };
 
 
-const FIELDS_DATE = {
-    deadlineDate: {
+const FIELDS_MEET_DATE = {
+    meetDate: {
         tag: 'input',
         type: 'date',
         className: 'form-control input-sm',
@@ -39,8 +56,8 @@ const FIELDS_DATE = {
 };
 
 
-const FIELDS_TIME = {
-    deadlineTime: {
+const FIELDS_MEET_TIME = {
+    meetTime: {
         tag: 'input',
         type: 'time',
         className: 'form-control input-sm',
@@ -90,6 +107,8 @@ class CardWriteView extends React.Component {
         const videoYn = !!values.videoName;
         const imageFile = values.imageFile ? values.imageFile[0] : null;
         const imageYN = !!values.imageFile;
+        const meetDate = values.meetDate;
+        const meetTime = values.meetTime;
         const deadlineDate = values.deadlineDate;
         const deadlineTime = values.deadlineTime;
 
@@ -103,6 +122,8 @@ class CardWriteView extends React.Component {
             videoYn,
             imageFile,
             imageYN,
+            meetDate,
+            meetTime,
             deadlineDate,
             deadlineTime,
             location,
@@ -155,7 +176,18 @@ class CardWriteView extends React.Component {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-body">
-                            {_.map(FIELDS, this.renderField)}
+                            <div className="row">
+                                <div className="col-xs-5">
+                                    <h4 className="text-danger text-center self-cardwrite-deadlineTitle">▧ DEADLINE</h4>
+                                </div>
+                                <div className="col-xs-4">
+                                    {_.map(FIELDS_DEADLINE_DATE, this.renderField)}
+                                </div>
+                                <div className="col-xs-3">
+                                    {_.map(FIELDS_DEADLINE_TIME, this.renderField)}
+                                </div>
+                            </div>
+                            {_.map(FIELDS_CONTENTS, this.renderField)}
                             <div className="row">
                                 <div className="col-xs-7">
                                     <p>▧ Video & Image</p>
@@ -179,14 +211,14 @@ class CardWriteView extends React.Component {
                                     </div>
                                 </div>
                                 <div className="col-xs-5">
-                                    <p> ▧ Action Deadline</p>
+                                    <p> ▧ Meet Date</p>
                                     <div className="form-group self-calender">
                                         <div className="input-group">
                                             <div className="input-group-addon">
                                                 <span className="glyphicon glyphicon-calendar" />
                                             </div>
-                                            {_.map(FIELDS_DATE, this.renderField)}
-                                            {_.map(FIELDS_TIME, this.renderField)}
+                                            {_.map(FIELDS_MEET_DATE, this.renderField)}
+                                            {_.map(FIELDS_MEET_TIME, this.renderField)}
                                         </div>
                                     </div>
                                 </div>
@@ -228,7 +260,7 @@ class CardWriteView extends React.Component {
 function validate(values) {
     const errors = {};
 
-    _.each(FIELDS, (type, field) => {
+    _.each(FIELDS_CONTENTS, (type, field) => {
         if (!values[field]) {
             errors[field] = `Enter the ${field}`;
         }
@@ -254,10 +286,12 @@ const mapDispatchToProps = (dispatch) => {
 
 export default reduxForm({
     form: 'CardPostViewForm',
-    fields: _.keys(FIELDS)
+    fields: _.keys(FIELDS_DEADLINE_DATE)
+        .concat(_.keys(FIELDS_DEADLINE_TIME))
+        .concat(_.keys(FIELDS_CONTENTS))
         .concat(_.keys(FIELDS_VIDEO))
-        .concat(_.keys(FIELDS_DATE))
-        .concat(_.keys(FIELDS_TIME))
+        .concat(_.keys(FIELDS_MEET_DATE))
+        .concat(_.keys(FIELDS_MEET_TIME))
         .concat(_.keys(FIELDS_IMAGE)), // ['contents', 'videoid', ... ]
     validate,
 })(connect(mapStateToProps, mapDispatchToProps)(CardWriteView));

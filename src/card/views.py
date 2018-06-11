@@ -28,7 +28,10 @@ class CardPostView(CreateModelMixin, GenericAPIView):
             .get(token_key=token_key)
         if query_set:
             request.data['user'] = query_set['user_id']
-            request.data['deadline'] = \
+            request.data['meet_at'] = \
+                request.data['meet_date'] + " " + \
+                request.data['meet_time']
+            request.data['deadline_at'] = \
                 request.data['deadline_date'] + " " + \
                 request.data['deadline_time']
 
