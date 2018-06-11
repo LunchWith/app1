@@ -28,7 +28,9 @@ class CardListView extends React.Component {
     }
 
     componentWillMount() {
-        this.props.actions.cardList();
+        if (!this.props.dataSet.length) { // when we come back from detail, we don't need to call cardList()
+            this.props.actions.cardList();
+        }
     }
 
     loadItems = () => {

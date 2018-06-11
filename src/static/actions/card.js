@@ -72,7 +72,7 @@ export function cardPost(
                     video_yn: videoYn,
                     image_yn: imageYn,
                     meet_date: meetDate,
-                    mett_time: meetTime,
+                    meet_time: meetTime,
                     deadline_date: deadlineDate,
                     deadline_time: deadlineTime,
                     location,

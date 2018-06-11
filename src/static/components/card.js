@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TimeAgo from 'react-timeago';
 import moment from 'moment';
+import { push } from 'react-router-redux';
+import { connect } from 'react-redux';
 
 import Video from './video';
 import Image from './image';
@@ -13,6 +15,7 @@ import showTime from '../utils/showTime';
 
 class Card extends React.Component {
     static propTypes = {
+        dispatch: PropTypes.func.isRequired,
         card: PropTypes.shape({
             id: PropTypes.number.isRequired,
             username: PropTypes.string.isRequired,
@@ -41,7 +44,7 @@ class Card extends React.Component {
 
     componentDidMount() {
         // show deadline every second
-        setInterval(() => {
+        this.deadlineTicking = setInterval(() => {
             const now = moment().utc();
             const deadlineAt = moment(this.props.card.deadlineAt).utc();
             const diffTime = moment.duration(deadlineAt.diff(now));
@@ -69,6 +72,14 @@ class Card extends React.Component {
         }, 1000);
     }
 
+    componentWillUnmount() {
+        clearInterval(this.deadlineTicking);
+    }
+
+    handleClickDetail = () => {
+        this.props.dispatch(push('/detail', this.props.card));
+    }
+
     handleClickMap = () => {
         this.setState({
             mapToggle: !this.state.mapToggle
@@ -94,23 +105,27 @@ class Card extends React.Component {
                         </div>
                     </div>
                     <div className="modal-body">
-                        <div className="self-card-deadline">
-                            <h4 className="text-danger text-right">
-                                {this.state.showDeadLine}
-                            </h4>
-                        </div>
-                        {this.props.card.imagePath ?
-                            <Image imagePath={this.props.card.imagePath} />
-                            :
-                            undefined
-                        }
-                        {this.props.card.videoName ?
-                            <Video videoName={this.props.card.videoName} />
-                            :
-                            undefined
-                        }
-                        <div className="self-card-contents">
-                            {this.props.card.contents}
+                        <div className="self-card-detail"
+                            onClick={this.handleClickDetail}
+                        >
+                            <div className="self-card-deadline">
+                                <h4 className="text-danger text-right">
+                                    {this.state.showDeadLine}
+                                </h4>
+                            </div>
+                            {this.props.card.imagePath ?
+                                <Image imagePath={this.props.card.imagePath} />
+                                :
+                                undefined
+                            }
+                            {this.props.card.videoName ?
+                                <Video videoName={this.props.card.videoName} />
+                                :
+                                undefined
+                            }
+                            <div className="self-card-contents">
+                                {this.props.card.contents}
+                            </div>
                         </div>
                         {this.state.mapToggle && this.props.card.location !== '' ?
                             <div className="self-card-map">
@@ -148,4 +163,12 @@ class Card extends React.Component {
 }
 
 
-export default Card;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        dispatch,
+    };
+};
+
+
+export default connect(null, mapDispatchToProps)(Card);
+export { Card as CardViewNotConnected };
